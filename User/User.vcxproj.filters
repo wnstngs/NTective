@@ -12,10 +12,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="trace">
-      <UniqueIdentifier>{4889550a-855d-4103-ab82-0063091f1ba2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="fw">
+    <Filter Include="common">
       <UniqueIdentifier>{de40b966-9b97-4423-8ac3-f6c9d8199330}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -26,22 +23,29 @@
     <ClCompile Include="ui\window.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="fw\ioccont.cpp">
-      <Filter>fw</Filter>
+    <ClCompile Include="common\ioccont.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\window.hpp">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="fw\ioccont.hpp">
-      <Filter>fw</Filter>
+    <ClInclude Include="common\ioccont.hpp">
+      <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="ui\win32.h">
       <Filter>ui</Filter>
     </ClInclude>
+    <ClInclude Include="log.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />
+    <None Include="CONTRIBUTION" />
   </ItemGroup>
 </Project>
