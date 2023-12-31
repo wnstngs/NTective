@@ -26,7 +26,7 @@
     <ClCompile Include="common\ioccont.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="log.cpp">
+    <ClCompile Include="common\log.cpp">
       <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -40,12 +40,11 @@
     <ClInclude Include="ui\win32.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="log.hpp">
+    <ClInclude Include="common\log.hpp">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />
-    <None Include="CONTRIBUTION" />
   </ItemGroup>
 </Project>

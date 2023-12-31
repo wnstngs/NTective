@@ -92,17 +92,16 @@
   <ItemGroup>
     <ClCompile Include="core\entry.cpp" />
     <ClCompile Include="common\ioccont.cpp" />
-    <ClCompile Include="log.cpp" />
+    <ClCompile Include="common\log.cpp" />
     <ClCompile Include="ui\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\ioccont.hpp" />
-    <ClInclude Include="log.hpp" />
+    <ClInclude Include="common\log.hpp" />
     <ClInclude Include="ui\win32.h" />
     <ClInclude Include="ui\window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CONTRIBUTION" />
     <None Include="TODO" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
