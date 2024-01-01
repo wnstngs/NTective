@@ -26,7 +26,9 @@ LOG_FORMATTER::FormatLogEntry(
     return stream.str();
 }
 
-DEBUGGER_LOG_PROVIDER::DEBUGGER_LOG_PROVIDER()
+DEBUGGER_LOG_PROVIDER::DEBUGGER_LOG_PROVIDER(
+    std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
+) : LogFormatter_(std::move(LogFormatter))
 {
 }
 
@@ -56,8 +58,9 @@ DEBUGGER_LOG_PROVIDER::RegisterFormatter(
 }
 
 FILE_LOG_PROVIDER::FILE_LOG_PROVIDER(
-    const std::filesystem::path &Path
-)
+    const std::filesystem::path &Path,
+    std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
+) : LogFormatter_(std::move(LogFormatter))
 {
     create_directories(Path.parent_path());
     File_.open(Path, std::wofstream::out | std::wofstream::app);

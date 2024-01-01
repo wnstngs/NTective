@@ -22,10 +22,15 @@ InitializeLoggingSystem()
     });
 
     IOC_CONTAINER::Get().RegisterFactory<DEBUGGER_LOG_PROVIDER>([] {
-        return std::make_shared<DEBUGGER_LOG_PROVIDER>();
+        return std::make_shared<DEBUGGER_LOG_PROVIDER>(IOC_CONTAINER::Get().Resolve<LOG_FORMATTER_BASE>());
     });
     IOC_CONTAINER::Get().RegisterFactory<FILE_LOG_PROVIDER>([] {
-        return std::make_shared<FILE_LOG_PROVIDER>("logs\\log.txt");
+        return std::make_shared<FILE_LOG_PROVIDER>("logs\\log.txt",
+                                                   IOC_CONTAINER::Get().Resolve<LOG_FORMATTER_BASE>());
+    });
+
+    IOC_CONTAINER::Get().RegisterFactory<LOG_FORMATTER_BASE>([] {
+        return std::make_shared<LOG_FORMATTER>();
     });
 
     IOC_CONTAINER::Get().RegisterSingleton<LOG_SESSION_BASE>([] {

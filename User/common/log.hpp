@@ -121,7 +121,9 @@ public:
  */
 class DEBUGGER_LOG_PROVIDER : public LOG_PROVIDER_BASE {
 public:
-    DEBUGGER_LOG_PROVIDER();
+    DEBUGGER_LOG_PROVIDER(
+        std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter = {}
+    );
 
     void
     Write(
@@ -150,7 +152,8 @@ public:
      * @param Path The path to the log file.
      */
     FILE_LOG_PROVIDER(
-        const std::filesystem::path &Path
+        const std::filesystem::path &Path,
+        std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter = {}
     );
 
     void
