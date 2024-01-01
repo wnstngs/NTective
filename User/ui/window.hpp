@@ -9,7 +9,7 @@
 #include <optional>
 #include <string>
 
-#include "win32.h"
+#include "../common/win32.h"
 
 /*!
  * @brief Abstract base class for window classes.

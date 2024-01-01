@@ -1,3 +1,8 @@
+/*!
+ *  @file       log.hpp
+ *  @brief      Logging system.
+ */
+
 #pragma once
 
 #include <filesystem>
@@ -5,8 +10,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-#include "ui/win32.h"
 
 enum class LOG_LEVEL {
     Critical,
@@ -160,17 +163,17 @@ public:
 /**
  * @brief Log session implementation.
  */
-class LOG_SESSION : public LOG_SESSION_BASE {
+class LOG_SESSION_IMPL : public LOG_SESSION_BASE {
 public:
     /**
      * @brief Constructs a log session with the specified log providers.
      * @param LogProviders Vector of log providers to initialize the session with.
      */
-    LOG_SESSION(
+    LOG_SESSION_IMPL(
         std::vector<std::shared_ptr<LOG_PROVIDER_BASE>> LogProviders = {}
     );
 
-    ~LOG_SESSION();
+    ~LOG_SESSION_IMPL();
 
     void
     Write(
@@ -192,7 +195,7 @@ private:
 /**
  * @brief Controller for managing log entries and session.
  */
-class LOG_CONTROLLER : private LOG_ENTRY {
+class LOG_CONTROLLER : LOG_ENTRY {
 public:
     /**
      * @brief Constructs a log controller with source file information.
@@ -263,7 +266,7 @@ public:
      */
     LOG_CONTROLLER &
     Session(
-        LOG_SESSION *Session
+        LOG_SESSION_IMPL *Session
     );
 
     ~LOG_CONTROLLER();

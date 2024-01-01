@@ -1,4 +1,10 @@
+/*!
+ *  @file       log.cpp
+ *  @brief      Logging system.
+ */
+
 #include "log.hpp"
+#include "win32.h"
 
 DEBUGGER_LOG_PROVIDER::DEBUGGER_LOG_PROVIDER()
 {
@@ -35,16 +41,16 @@ FILE_LOG_PROVIDER::Flush()
     File_.flush();
 }
 
-LOG_SESSION::LOG_SESSION(
+LOG_SESSION_IMPL::LOG_SESSION_IMPL(
     std::vector<std::shared_ptr<LOG_PROVIDER_BASE>> LogProviders
 ) : LogProviders_(std::move(LogProviders))
 {
 }
 
-LOG_SESSION::~LOG_SESSION() = default;
+LOG_SESSION_IMPL::~LOG_SESSION_IMPL() = default;
 
 void
-LOG_SESSION::Write(
+LOG_SESSION_IMPL::Write(
     LOG_ENTRY &LogEntry
 )
 {
@@ -54,7 +60,7 @@ LOG_SESSION::Write(
 }
 
 void
-LOG_SESSION::Flush()
+LOG_SESSION_IMPL::Flush()
 {
     for (const auto &provider : LogProviders_) {
         provider->Flush();
@@ -62,7 +68,7 @@ LOG_SESSION::Flush()
 }
 
 void
-LOG_SESSION::RegisterProvider(
+LOG_SESSION_IMPL::RegisterProvider(
     std::shared_ptr<LOG_PROVIDER_BASE> LogProvider
 )
 {
@@ -133,7 +139,7 @@ LOG_CONTROLLER::Verbose(
 
 LOG_CONTROLLER &
 LOG_CONTROLLER::Session(
-    LOG_SESSION *Session
+    LOG_SESSION_IMPL *Session
 )
 {
     LogSession_ = Session;

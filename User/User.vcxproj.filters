@@ -29,6 +29,9 @@
     <ClCompile Include="common\log.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="core\init.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\window.hpp">
@@ -37,12 +40,13 @@
     <ClInclude Include="common\ioccont.hpp">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="ui\win32.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="common\log.hpp">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="common\win32.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="core\init.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />

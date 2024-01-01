@@ -3,27 +3,10 @@
  *  @brief      Entry point of the NTective program.
  */
 
-#include <iostream>
-#include <string>
+#include <exception>
 
-#include "../common/ioccont.hpp"
-#include "../ui/window.hpp"
-
-void
-InitializeUserPhase0()
-{
-    IOC_CONTAINER::Get().RegisterFactory<WINDOW_BASE>([](WINDOW_BASE::IOC_PAYLOAD IocParams) {
-        return std::make_shared<MAIN_WINDOW>(std::move(IocParams.WindowClass));
-    });
-
-    IOC_CONTAINER::Get().RegisterFactory<WINDOW_CLASS_BASE>([] {
-        return std::make_shared<WINDOW_CLASS>();
-    });
-
-    IOC_CONTAINER::Get().RegisterSingleton<WINDOW_CLASS_BASE>([] {
-        return IOC_CONTAINER::Get().Resolve<WINDOW_CLASS_BASE>();
-    });
-}
+#include "init.hpp"
+#include "../common/win32.h"
 
 int
 WINAPI
@@ -35,7 +18,8 @@ wWinMain(
 )
 {
     try {
-        InitializeUserPhase0();
+        InitializeLoggingSystem();
+        InitializeUiSystem();
     } catch (const std::exception &) {
         // TODO: Log
     } catch (...) {

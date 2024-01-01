@@ -93,12 +93,14 @@
     <ClCompile Include="core\entry.cpp" />
     <ClCompile Include="common\ioccont.cpp" />
     <ClCompile Include="common\log.cpp" />
+    <ClCompile Include="core\init.cpp" />
     <ClCompile Include="ui\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\ioccont.hpp" />
     <ClInclude Include="common\log.hpp" />
-    <ClInclude Include="ui\win32.h" />
+    <ClInclude Include="common\win32.h" />
+    <ClInclude Include="core\init.hpp" />
     <ClInclude Include="ui\window.hpp" />
   </ItemGroup>
   <ItemGroup>
