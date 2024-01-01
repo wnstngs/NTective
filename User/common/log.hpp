@@ -61,6 +61,26 @@ public:
     std::chrono::system_clock::time_point LogTimestamp;
 };
 
+class LOG_FORMATTER_BASE {
+public:
+    virtual
+    ~LOG_FORMATTER_BASE() = default;
+
+    virtual
+    std::wstring
+    FormatLogEntry(
+        const LOG_ENTRY &LogEntry
+    ) = 0;
+};
+
+class LOG_FORMATTER : public LOG_FORMATTER_BASE {
+public:
+    std::wstring
+    FormatLogEntry(
+        const LOG_ENTRY &LogEntry
+    ) override;
+};
+
 /**
  * @brief Base class for log providers.
  */
@@ -84,6 +104,16 @@ public:
     virtual
     void
     Flush() = 0;
+
+    /**
+     * @brief Registers a log entry formatter to the provider.
+     * @param LogFormatter The log entry formatter to register.
+     */
+    virtual
+    void
+    RegisterFormatter(
+        std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
+    ) = 0;
 };
 
 /**
@@ -100,6 +130,14 @@ public:
 
     void
     Flush() override;
+
+    void
+    RegisterFormatter(
+        std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
+    ) override;
+
+private:
+    std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter_;
 };
 
 /**
@@ -123,8 +161,14 @@ public:
     void
     Flush() override;
 
+    void
+    RegisterFormatter(
+        std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
+    ) override;
+
 private:
     std::wofstream File_;
+    std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter_;
 };
 
 /**

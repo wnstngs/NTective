@@ -6,19 +6,53 @@
 #include "log.hpp"
 #include "win32.h"
 
+std::wstring
+LOG_FORMATTER::FormatLogEntry(
+    const LOG_ENTRY &LogEntry
+)
+{
+    std::wostringstream stream;
+    std::wstring logLevelName = LogLevelAsString(LogEntry.LogLevel);
+
+    stream << std::format(L"@{} {{{}}} {}",
+                          logLevelName,
+                          std::chrono::zoned_time{std::chrono::current_zone(), LogEntry.LogTimestamp},
+                          LogEntry.LogData);
+    stream << std::format(L"\n  >> at {}\n     {}({})\n",
+                          LogEntry.FunctionName,
+                          LogEntry.SourceFileName,
+                          LogEntry.SourceLine);
+
+    return stream.str();
+}
+
 DEBUGGER_LOG_PROVIDER::DEBUGGER_LOG_PROVIDER()
 {
 }
 
 void
-DEBUGGER_LOG_PROVIDER::Write(const LOG_ENTRY &LogEntry)
+DEBUGGER_LOG_PROVIDER::Write(
+    const LOG_ENTRY &LogEntry
+)
 {
-    OutputDebugStringW(LogEntry.LogData.c_str());
+    if (LogFormatter_) {
+        OutputDebugStringW(LogFormatter_->FormatLogEntry(LogEntry).c_str());
+    } else {
+        OutputDebugStringW(LogEntry.LogData.c_str());
+    }
 }
 
 void
 DEBUGGER_LOG_PROVIDER::Flush()
 {
+}
+
+void
+DEBUGGER_LOG_PROVIDER::RegisterFormatter(
+    std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
+)
+{
+    LogFormatter_ = std::move(LogFormatter);
 }
 
 FILE_LOG_PROVIDER::FILE_LOG_PROVIDER(
@@ -30,15 +64,29 @@ FILE_LOG_PROVIDER::FILE_LOG_PROVIDER(
 }
 
 void
-FILE_LOG_PROVIDER::Write(const LOG_ENTRY &LogEntry)
+FILE_LOG_PROVIDER::Write(
+    const LOG_ENTRY &LogEntry
+)
 {
-    File_ << LogEntry.LogData.c_str();
+    if (LogFormatter_) {
+        File_ << LogFormatter_->FormatLogEntry(LogEntry).c_str();
+    } else {
+        File_ << LogEntry.LogData.c_str();
+    }
 }
 
 void
 FILE_LOG_PROVIDER::Flush()
 {
     File_.flush();
+}
+
+void
+FILE_LOG_PROVIDER::RegisterFormatter(
+    std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
+)
+{
+    LogFormatter_ = std::move(LogFormatter);
 }
 
 LOG_SESSION_IMPL::LOG_SESSION_IMPL(
