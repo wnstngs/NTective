@@ -82,7 +82,8 @@ LOG_CONTROLLER::LOG_CONTROLLER(
 ) : LOG_ENTRY{
     .SourceFileName = SourceFile,
     .FunctionName = Function,
-    .SourceLine = Line
+    .SourceLine = Line,
+    .LogTimestamp = std::chrono::system_clock::now()
 }
 {
 }

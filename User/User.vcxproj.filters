@@ -46,7 +46,9 @@
     <ClInclude Include="common\win32.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="core\init.hpp" />
+    <ClInclude Include="core\init.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />

@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <memory>
@@ -57,6 +58,7 @@ public:
     const wchar_t *SourceFileName;
     const wchar_t *FunctionName;
     const wchar_t *SourceLine;
+    std::chrono::system_clock::time_point LogTimestamp;
 };
 
 /**
