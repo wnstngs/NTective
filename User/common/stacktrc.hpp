@@ -4,6 +4,7 @@
  */
 
 #pragma once
+/*
 #include <string>
 
 namespace backward {
@@ -34,3 +35,4 @@ public:
 };
 
 }
+*/

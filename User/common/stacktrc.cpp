@@ -4,7 +4,7 @@
  */
 
 #include "stacktrc.hpp"
-
+/*
 namespace Common::Util {
 
 STACKTRACE::STACKTRACE()
@@ -33,3 +33,4 @@ STACKTRACE::Get()
 {
 }
 }
+*/
