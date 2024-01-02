@@ -30,14 +30,14 @@ ASSERTION::ASSERTION(
 
 ASSERTION::~ASSERTION()
 {
-    LOG.InSession(GetDefaultSession())
+    LOG.InSession(Log::GetDefaultSession())
        .WithMessage(Stream_.str())
        .At(AssertionEffect_ == ASSERTION_EFFECT::Termination
                ? LOG_LEVEL::Critical
                : LOG_LEVEL::Error);
 
     if (AssertionEffect_ == ASSERTION_EFFECT::Termination) {
-        GetDefaultSession()->Flush();
+        Log::GetDefaultSession()->Flush();
         std::terminate();
     }
 }

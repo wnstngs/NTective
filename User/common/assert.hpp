@@ -100,7 +100,7 @@ private:
                                                 : Common::Util::ASSERTION_EFFECT::Log           \
                                         }
 
-#define ASSERTION_WATCH(...)                            Common_Util_DISPATCH_VA(Common_Util_AW_, __VA_ARGS__) 
+#define WATCH(...)                                      Common_Util_DISPATCH_VA(Common_Util_AW_, __VA_ARGS__)
 #define Common_Util_AW_(Expression)                     Watch((Expression), Common_Util_WSTRING(Expression)) 
 #define Common_Util_AW_1_(z)                            Common_Util_AW_(z) 
 #define Common_Util_AW_2_(z, a)                         Common_Util_AW_(z).Common_Util_AW_(a) 
