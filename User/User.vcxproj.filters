@@ -47,6 +47,12 @@
     <ClCompile Include="common\assert.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="common\strutil.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\excption.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\window.hpp">
@@ -80,6 +86,12 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="common\stacktrc.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\excption.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\strutil.hpp">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>

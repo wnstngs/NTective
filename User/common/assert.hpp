@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 
+#include "excption.hpp"
 #include "macros.h"
 
 namespace Common::Util {
@@ -16,6 +17,13 @@ enum class ASSERTION_EFFECT {
     Log,
     Exception,
     Termination
+};
+
+class ASSERTION_FAILED_EXCEPTION : public BUF_EXCEPTION {
+    using Base = BUF_EXCEPTION;
+
+public:
+    using BUF_EXCEPTION::BUF_EXCEPTION;
 };
 
 class ASSERTION {
@@ -50,6 +58,10 @@ public:
             << L"\n";
         return *this;
     }
+
+    [[noreturn]]
+    void
+    Throw();
 
 private:
     const wchar_t *FileName_;

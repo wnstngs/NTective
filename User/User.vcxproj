@@ -97,9 +97,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="common\assert.cpp" />
+    <ClCompile Include="common\excption.cpp" />
     <ClCompile Include="common\logprov.cpp" />
     <ClCompile Include="common\logsessn.cpp" />
     <ClCompile Include="common\stacktrc.cpp" />
+    <ClCompile Include="common\strutil.cpp" />
     <ClCompile Include="core\entry.cpp" />
     <ClCompile Include="common\ioc.cpp" />
     <ClCompile Include="common\log.cpp" />
@@ -108,11 +110,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\assert.hpp" />
+    <ClInclude Include="common\excption.hpp" />
     <ClInclude Include="common\ioc.hpp" />
     <ClInclude Include="common\log.hpp" />
     <ClInclude Include="common\logprov.hpp" />
     <ClInclude Include="common\macros.h" />
     <ClInclude Include="common\stacktrc.hpp" />
+    <ClInclude Include="common\strutil.hpp" />
     <ClInclude Include="common\win32.h" />
     <ClInclude Include="core\init.hpp" />
     <ClInclude Include="common\logsessn.hpp" />

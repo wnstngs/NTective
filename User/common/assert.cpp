@@ -52,4 +52,11 @@ ASSERTION::Message(const std::wstring &Message)
     return *this;
 }
 
+void
+ASSERTION::Throw()
+{
+    AssertionEffect_ = ASSERTION_EFFECT::Exception;
+    throw ASSERTION_FAILED_EXCEPTION{};
+}
+
 }
