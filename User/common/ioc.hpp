@@ -1,5 +1,5 @@
 /*!
- *  @file       ioccont.hpp
+ *  @file       ioc.hpp
  *  @brief      IoC container.
  *  @details    The implementation of an IoC container that supports registration
  *              and resolution of factories for creating instances of various types,
@@ -33,14 +33,17 @@ concept PARAMETERIZED = requires() {
 template<class T>
 concept NOT_PARAMETERIZED = !PARAMETERIZED<T>;
 
+template<class T>
+using TYPE_FACTORY = std::function<std::shared_ptr<T>()>;
+
+template<class T>
+using TYPE_FACTORY_PARAMETERIZED = std::function<std::shared_ptr<T>(typename T::IOC_PAYLOAD IocParams)>;
+
+/*!
+ * @brief IoC container.
+ */
 class IOC {
 public:
-    template<class T>
-    using TYPE_FACTORY = std::function<std::shared_ptr<T>()>;
-
-    template<class T>
-    using TYPE_FACTORY_PARAMETERIZED = std::function<std::shared_ptr<T>(typename T::IOC_PAYLOAD IocParams)>;
-
     /*!
      * @brief Registers a factory function for creating instances of non-parameterized type T.
      * @param InstanceFactory The factory function for type T.
@@ -51,10 +54,7 @@ public:
         TYPE_FACTORY<T> InstanceFactory
     )
     {
-        IocEntryMap_[typeid(T)] = {
-            IOC_STATE::InstanceFactory,
-            std::move(InstanceFactory)
-        };
+        IocContainerMap_[typeid(T)] = InstanceFactory;
     }
 
     /*!
@@ -67,26 +67,7 @@ public:
         TYPE_FACTORY_PARAMETERIZED<T> InstanceFactory
     )
     {
-        IocEntryMap_[typeid(T)] = {
-            IOC_STATE::InstanceFactory,
-            std::move(InstanceFactory)
-        };
-    }
-
-    /*!
-     * @brief Registers a factory function for creating a singleton instance of type T.
-     * @param SingletonFactory The factory function for type T.
-     */
-    template<class T>
-    void
-    RegisterSingleton(
-        TYPE_FACTORY<T> SingletonFactory
-    )
-    {
-        IocEntryMap_[typeid(T)] = {
-            IOC_STATE::SingletonFactory,
-            std::move(SingletonFactory)
-        };
+        IocContainerMap_[typeid(T)] = InstanceFactory;
     }
 
     /*!
@@ -115,78 +96,34 @@ public:
     }
 
 private:
-    /*!
-     * @brief Enumeration representing the state of the IoC entry.
-     */
-    enum class IOC_STATE {
-        /* Factory used to resolve separate instances. */
-        InstanceFactory,
-
-        /* Factory used to resolve global shared singletons in a lazy manner. */
-        SingletonFactory,
-
-        /* Global shared singleton instance. */
-        SingletonInstance
-    };
-
-    /*!
-     * @brief Internal class representing an entry in the IoC container.
-     */
-    class IOC_ENTRY {
-    public:
-        IOC_STATE State;
-        std::any Content;
-    };
-
     template<class T, class G, class... P>
     std::shared_ptr<T>
     ResolveInternal(
         P... Payload
     )
     {
-        const auto iterator = IocEntryMap_.find(typeid(T));
-
-        if (iterator == IocEntryMap_.end()) {
+        const auto iterator = IocContainerMap_.find(typeid(T));
+        if (iterator == IocContainerMap_.end()) {
             throw std::runtime_error{
                 std::format("Failed to find a factory for \"{}\" in the factory map",
                             typeid(T).name())
             };
         }
 
-        auto &entry = iterator->second;
+        const auto &entry = iterator->second;
 
         try {
-            std::shared_ptr<T> ptr;
-
-            switch (entry.State) {
-
-            case IOC_STATE::InstanceFactory:
-                ptr = std::any_cast<G>(entry)(std::forward<P>(Payload)...);
-                break;
-
-            case IOC_STATE::SingletonFactory:
-                ptr = std::any_cast<G>(entry)(std::forward<P>(Payload)...);
-                entry.Content = ptr;
-                entry.State = IOC_STATE::SingletonInstance;
-                break;
-
-            case IOC_STATE::SingletonInstance:
-                ptr = std::any_cast<std::shared_ptr<T>>(entry.Content);
-                break;
-            }
-
-            return ptr;
-
+            return std::any_cast<G>(entry)(std::forward<P>(Payload)...);
         } catch (const std::bad_any_cast &) {
             throw std::runtime_error{
                 std::format("Failed to find a factory or instance for \"{}\" mapped from \"{}\"",
                             typeid(G).name(),
-                            entry.Content.type().name())
+                            entry.type().name())
             };
         }
     }
 
-    std::unordered_map<std::type_index, IOC_ENTRY> IocEntryMap_;
+    std::unordered_map<std::type_index, std::any> IocContainerMap_;
 };
 
 /*!
@@ -195,5 +132,76 @@ private:
  */
 IOC &
 GetIoc();
+
+/*!
+ * @brief Singleton container.
+ */
+class SINGLETONS {
+public:
+    /*!
+     * @brief Registers a factory function for creating a singleton instance of type T.
+     * @param SingletonFactory The factory function for type T.
+     */
+    template<class T>
+    void
+    RegisterFactory(
+        TYPE_FACTORY<T> SingletonFactory
+    )
+    {
+        SingletonContainerMap_[typeid(T)] = SingletonFactory;
+    }
+
+    /*!
+     * @brief Registers a factory function that essentially passes through the resolution
+     * to the IoC container for the specified type T.
+     */
+    template<class T>
+    void
+    RegisterDelegateFactory()
+    {
+        RegisterFactory<T>([] {
+            return GetIoc().Resolve<T>();
+        });
+    }
+
+    template<class T>
+    std::shared_ptr<T>
+    Resolve()
+    {
+        const auto iterator = SingletonContainerMap_.find(typeid(T));
+
+        if (iterator == SingletonContainerMap_.end()) {
+            throw std::runtime_error{
+                std::format("Could not find entry for type \"{}\" in singleton container",
+                            typeid(T).name())
+            };
+        }
+
+        auto &entry = iterator->second;
+
+        try {
+            if (auto ppInstance = std::any_cast<std::shared_ptr<T>>(&entry)) {
+                return *ppInstance;
+            }
+
+            auto pInstance = std::any_cast<TYPE_FACTORY<T>>(entry)();
+            entry = pInstance;
+
+            return pInstance;
+
+        } catch (const std::bad_any_cast &) {
+            throw std::runtime_error{
+                std::format("Could not resolve singleton for type \"{}\" in singleton container",
+                            typeid(T).name())
+            };
+        }
+    }
+
+private:
+    std::unordered_map<std::type_index, std::any> SingletonContainerMap_;
+};
+
+SINGLETONS &
+GetSingletons();
 
 }

@@ -161,6 +161,6 @@ GetDefaultSession();
  * @brief Basic macro for chain logging.
  * For example: LOG.Error("My error message");
  */
-#define LOG Common::Log::LOG_CONTROLLER{ __FILEW__, __FUNCTIONW__, __LINE__ }
+#define LOG Common::Log::LOG_CONTROLLER{ __FILEW__, __FUNCTIONW__, __LINE__ }.InSession(Common::Log::GetDefaultSession())
 
 };

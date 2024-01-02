@@ -101,14 +101,14 @@
     <ClCompile Include="common\logsessn.cpp" />
     <ClCompile Include="common\stacktrc.cpp" />
     <ClCompile Include="core\entry.cpp" />
-    <ClCompile Include="common\ioccont.cpp" />
+    <ClCompile Include="common\ioc.cpp" />
     <ClCompile Include="common\log.cpp" />
     <ClCompile Include="core\init.cpp" />
     <ClCompile Include="ui\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\assert.hpp" />
-    <ClInclude Include="common\ioccont.hpp" />
+    <ClInclude Include="common\ioc.hpp" />
     <ClInclude Include="common\log.hpp" />
     <ClInclude Include="common\logprov.hpp" />
     <ClInclude Include="common\macros.h" />

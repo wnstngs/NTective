@@ -26,7 +26,7 @@
     <ClCompile Include="ui\window.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="common\ioccont.cpp">
+    <ClCompile Include="common\ioc.cpp">
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="common\log.cpp">
@@ -52,7 +52,7 @@
     <ClInclude Include="ui\window.hpp">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="common\ioccont.hpp">
+    <ClInclude Include="common\ioc.hpp">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="common\log.hpp">

@@ -5,7 +5,7 @@
 
 #include "log.hpp"
 
-#include "ioccont.hpp"
+#include "ioc.hpp"
 #include "logsessn.hpp"
 
 using namespace Common::Ioc;

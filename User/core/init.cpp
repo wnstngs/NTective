@@ -4,7 +4,7 @@
  */
 
 #include "init.hpp"
-#include "../common/ioccont.hpp"
+#include "../common/ioc.hpp"
 #include "../common/logprov.hpp"
 #include "../common/logsessn.hpp"
 #include "../ui/window.hpp"
@@ -32,7 +32,7 @@ InitializeLoggingSystem()
     });
     GetIoc().RegisterFactory<FILE_LOG_PROVIDER_BASE>([] {
         return std::make_shared<FILE_LOG_PROVIDER_IMPL>("logs\\log.txt",
-                                                   GetIoc().Resolve<LOG_FORMATTER_BASE>());
+                                                        GetIoc().Resolve<LOG_FORMATTER_BASE>());
     });
 
     /* Log formatter */
@@ -41,9 +41,7 @@ InitializeLoggingSystem()
     });
 
     /* Log session singleton */
-    GetIoc().RegisterSingleton<LOG_SESSION_BASE>([] {
-        return GetIoc().Resolve<LOG_SESSION_BASE>();
-    });
+    GetSingletons().RegisterDelegateFactory<LOG_SESSION_BASE>();
 }
 
 void
@@ -57,7 +55,5 @@ InitializeUiSystem()
         return std::make_shared<WINDOW_CLASS>();
     });
 
-    GetIoc().RegisterSingleton<WINDOW_CLASS_BASE>([] {
-        return GetIoc().Resolve<WINDOW_CLASS_BASE>();
-    });
+    GetSingletons().RegisterDelegateFactory<WINDOW_CLASS_BASE>();
 }
