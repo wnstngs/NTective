@@ -35,14 +35,6 @@ concept NOT_PARAMETERIZED = !PARAMETERIZED<T>;
 
 class IOC {
 public:
-    /*!
-     * @brief IoC instance accessor.
-     * @return The singleton instance of the IoC container.
-     */
-    static
-    IOC &
-    Get();
-
     template<class T>
     using TYPE_FACTORY = std::function<std::shared_ptr<T>()>;
 
@@ -196,5 +188,12 @@ private:
 
     std::unordered_map<std::type_index, IOC_ENTRY> IocEntryMap_;
 };
+
+/*!
+ * @brief IoC instance accessor.
+ * @return The singleton instance of the IoC container.
+ */
+IOC &
+GetIoc();
 
 }

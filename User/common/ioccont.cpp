@@ -6,11 +6,12 @@
 #include "ioccont.hpp"
 
 namespace Common::Ioc {
+
 IOC &
-IOC::Get()
+GetIoc()
 {
-    static IOC container;
-    return container;
+    static IOC iocContainer;
+    return iocContainer;
 }
 
 }
