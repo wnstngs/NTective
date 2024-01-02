@@ -9,137 +9,141 @@
 #include <string>
 
 namespace Common::Log {
-    class LOG_SESSION_BASE;
 
-    enum class LOG_LEVEL {
-        Critical,
-        Error,
-        Warning,
-        Info,
-        Verbose
-    };
+class LOG_SESSION_BASE;
 
-    /**
-     * @brief Converts log level to a string representation.
-     * @param LogLevel The log level to convert.
-     * @return A string representation of the log level.
-     */
-    inline
-    std::wstring
-    LogLevelAsString(
-        const LOG_LEVEL LogLevel
-    )
-    {
-        switch (LogLevel) {
+enum class LOG_LEVEL {
+    Critical,
+    Error,
+    Warning,
+    Info,
+    Verbose
+};
 
-        case LOG_LEVEL::Critical:
-            return L"Critical";
-        case LOG_LEVEL::Error:
-            return L"Error";
-        case LOG_LEVEL::Warning:
-            return L"Warning";
-        case LOG_LEVEL::Info:
-            return L"Info";
-        case LOG_LEVEL::Verbose:
-            return L"Verbose";
-        }
+/**
+ * @brief Converts log level to a string representation.
+ * @param LogLevel The log level to convert.
+ * @return A string representation of the log level.
+ */
+inline
+std::wstring
+LogLevelAsString(
+    const LOG_LEVEL LogLevel
+)
+{
+    switch (LogLevel) {
 
-        return {};
+    case LOG_LEVEL::Critical:
+        return L"Critical";
+    case LOG_LEVEL::Error:
+        return L"Error";
+    case LOG_LEVEL::Warning:
+        return L"Warning";
+    case LOG_LEVEL::Info:
+        return L"Info";
+    case LOG_LEVEL::Verbose:
+        return L"Verbose";
     }
 
+    return {};
+}
+
+/**
+ * @brief Represents an individual log entry.
+ */
+class LOG_ENTRY {
+public:
+    std::wstring LogData;
+    LOG_LEVEL LogLevel;
+    const wchar_t *SourceFileName;
+    const wchar_t *FunctionName;
+    const wchar_t *SourceLine;
+    std::chrono::system_clock::time_point LogTimestamp;
+};
+
+/**
+ * @brief Controller for managing log entries and session.
+ */
+class LOG_CONTROLLER : LOG_ENTRY {
+public:
     /**
-     * @brief Represents an individual log entry.
+     * @brief Constructs a log controller with source file information.
+     * @param SourceFile The source file name.
+     * @param Function The function name.
+     * @param Line The source line number.
      */
-    class LOG_ENTRY {
-    public:
-        std::wstring LogData;
-        LOG_LEVEL LogLevel;
-        const wchar_t *SourceFileName;
-        const wchar_t *FunctionName;
-        const wchar_t *SourceLine;
-        std::chrono::system_clock::time_point LogTimestamp;
-    };
+    LOG_CONTROLLER(
+        const wchar_t *SourceFile,
+        const wchar_t *Function,
+        const wchar_t *Line
+    );
 
     /**
-     * @brief Controller for managing log entries and session.
+     * @brief Records an error-level log message.
+     * @param Message The error message to be logged.
+     * @return Reference to the current log controller.
      */
-    class LOG_CONTROLLER : LOG_ENTRY {
-    public:
-        /**
-         * @brief Constructs a log controller with source file information.
-         * @param SourceFile The source file name.
-         * @param Function The function name.
-         * @param Line The source line number.
-         */
-        LOG_CONTROLLER(
-            const wchar_t *SourceFile,
-            const wchar_t *Function,
-            const wchar_t *Line
-        );
+    LOG_CONTROLLER &
+    Error(
+        std::wstring Message
+    );
 
-        /**
-         * @brief Records an error-level log message.
-         * @param Message The error message to be logged.
-         * @return Reference to the current log controller.
-         */
-        LOG_CONTROLLER &
-        Error(
-            std::wstring Message
-        );
+    /**
+     * @brief Records a warning-level log message.
+     * @param Message The warning message to be logged.
+     * @return Reference to the current log controller.
+     */
+    LOG_CONTROLLER &
+    Warning(
+        std::wstring Message
+    );
 
-        /**
-         * @brief Records a warning-level log message.
-         * @param Message The warning message to be logged.
-         * @return Reference to the current log controller.
-         */
-        LOG_CONTROLLER &
-        Warning(
-            std::wstring Message
-        );
+    /**
+     * @brief Records an info-level log message.
+     * @param Message The info message to be logged.
+     * @return Reference to the current log controller.
+     */
+    LOG_CONTROLLER &
+    Info(
+        std::wstring Message
+    );
 
-        /**
-         * @brief Records an info-level log message.
-         * @param Message The info message to be logged.
-         * @return Reference to the current log controller.
-         */
-        LOG_CONTROLLER &
-        Info(
-            std::wstring Message
-        );
+    /**
+     * @brief Records a critical-level log message.
+     * @param Message The critical message to be logged.
+     * @return Reference to the current log controller.
+     */
+    LOG_CONTROLLER &
+    Critical(
+        std::wstring Message
+    );
 
-        /**
-         * @brief Records a critical-level log message.
-         * @param Message The critical message to be logged.
-         * @return Reference to the current log controller.
-         */
-        LOG_CONTROLLER &
-        Critical(
-            std::wstring Message
-        );
+    /**
+     * @brief Records a verbose-level log message.
+     * @param Message The verbose message to be logged.
+     * @return Reference to the current log controller.
+     */
+    LOG_CONTROLLER &
+    Verbose(
+        std::wstring Message
+    );
 
-        /**
-         * @brief Records a verbose-level log message.
-         * @param Message The verbose message to be logged.
-         * @return Reference to the current log controller.
-         */
-        LOG_CONTROLLER &
-        Verbose(
-            std::wstring Message
-        );
+    /**
+     * @brief Associates a log session with the controller.
+     * @param Session The log session to associate.
+     * @return Reference to the current log controller.
+     */
+    LOG_CONTROLLER &
+    Session(
+        LOG_SESSION_BASE *Session
+    );
 
-        /**
-         * @brief Associates a log session with the controller.
-         * @param Session The log session to associate.
-         * @return Reference to the current log controller.
-         */
-        LOG_CONTROLLER &
-        Session(
-            LOG_SESSION_BASE *Session
-        );
+    ~LOG_CONTROLLER();
 
-        ~LOG_CONTROLLER();
+private:
+    LOG_SESSION_BASE *LogSession_ = nullptr;
+};
 
-    private:
-        LOG_SESSION_BASE *LogSession_ = nullptr;
-    };
+#define LOG Common::Log::LOG_CONTROLLER{ __FILEW__, __FUNCTIONW__, __LINE__ }
+
 };

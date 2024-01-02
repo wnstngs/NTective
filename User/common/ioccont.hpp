@@ -16,22 +16,22 @@
 #include <typeindex>
 
 namespace Common::Ioc {
-    /*!
-     * @brief Concept to identify types with payload.
-     */
-    template<class T>
-    concept PARAMETERIZED = requires() {
-        {
-            typename T::IOC_PAYLOAD{}
-        };
-    };
 
-    /*!
-     * @brief Concept to identify types without payload.
-     */
-    template<class T>
-    concept NOT_PARAMETERIZED = !PARAMETERIZED<T>;
-}
+/*!
+ * @brief Concept to identify types with payload.
+ */
+template<class T>
+concept PARAMETERIZED = requires() {
+    {
+        typename T::IOC_PAYLOAD{}
+    };
+};
+
+/*!
+ * @brief Concept to identify types without payload.
+ */
+template<class T>
+concept NOT_PARAMETERIZED = !PARAMETERIZED<T>;
 
 class IOC {
 public:
@@ -53,7 +53,7 @@ public:
      * @brief Registers a factory function for creating instances of non-parameterized type T.
      * @param InstanceFactory The factory function for type T.
      */
-    template<Common::Ioc::NOT_PARAMETERIZED T>
+    template<NOT_PARAMETERIZED T>
     void
     RegisterFactory(
         TYPE_FACTORY<T> InstanceFactory
@@ -69,7 +69,7 @@ public:
      * @brief Registers a factory function for creating instances of parameterized type T.
      * @param InstanceFactory The factory function for type T.
      */
-    template<Common::Ioc::PARAMETERIZED T>
+    template<PARAMETERIZED T>
     void
     RegisterFactory(
         TYPE_FACTORY_PARAMETERIZED<T> InstanceFactory
@@ -101,7 +101,7 @@ public:
      * @brief Resolves and returns an instance of non-parameterized type T.
      * @return A shared pointer to the resolved instance.
      */
-    template<Common::Ioc::NOT_PARAMETERIZED T>
+    template<NOT_PARAMETERIZED T>
     std::shared_ptr<T>
     Resolve()
     {
@@ -113,7 +113,7 @@ public:
      * @param IocParams The parameters for creating the instance of type T.
      * @return A shared pointer to the resolved instance.
      */
-    template<Common::Ioc::PARAMETERIZED T>
+    template<PARAMETERIZED T>
     std::shared_ptr<T>
     Resolve(
         typename T::IOC_PAYLOAD &&IocParams = {}
@@ -196,3 +196,5 @@ private:
 
     std::unordered_map<std::type_index, IOC_ENTRY> IocEntryMap_;
 };
+
+}
