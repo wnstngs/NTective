@@ -17,11 +17,11 @@ LOG_FORMATTER::FormatLogEntry(
     std::wostringstream stream;
     std::wstring logLevelName = LogLevelAsString(LogEntry.LogLevel);
 
-    stream << std::format(L"@{} {{{}}} {}",
+    stream << std::format(L"[{}] [{}] {}",
                           logLevelName,
                           std::chrono::zoned_time{std::chrono::current_zone(), LogEntry.LogTimestamp},
                           LogEntry.LogData);
-    stream << std::format(L"\n  >> at {}\n     {}({})\n",
+    stream << std::format(L"\n  >> at {} [{} @ {}]\n",
                           LogEntry.FunctionName,
                           LogEntry.SourceFileName,
                           LogEntry.SourceLine);

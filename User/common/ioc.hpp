@@ -180,14 +180,14 @@ public:
         auto &entry = iterator->second;
 
         try {
-            if (auto ppInstance = std::any_cast<std::shared_ptr<T>>(&entry)) {
-                return *ppInstance;
+            if (auto existingInstance = std::any_cast<std::shared_ptr<T>>(&entry)) {
+                return *existingInstance;
             }
 
-            auto pInstance = std::any_cast<TYPE_FACTORY<T>>(entry)();
-            entry = pInstance;
+            auto instance = std::any_cast<TYPE_FACTORY<T>>(entry)();
+            entry = instance;
 
-            return pInstance;
+            return instance;
 
         } catch (const std::bad_any_cast &) {
             throw std::runtime_error{
