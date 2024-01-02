@@ -5,9 +5,9 @@
 
 #include "ioccont.hpp"
 
-IOC_CONTAINER &
-IOC_CONTAINER::Get()
+IOC &
+IOC::Get()
 {
-    static IOC_CONTAINER container;
+    static IOC container;
     return container;
 }

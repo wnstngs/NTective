@@ -15,7 +15,7 @@
 #include <memory>
 #include <typeindex>
 
-namespace IOC {
+namespace Common::Ioc {
     /*!
      * @brief Concept to identify types with payload.
      */
@@ -33,14 +33,14 @@ namespace IOC {
     concept NOT_PARAMETERIZED = !PARAMETERIZED<T>;
 }
 
-class IOC_CONTAINER {
+class IOC {
 public:
     /*!
      * @brief IoC instance accessor.
      * @return The singleton instance of the IoC container.
      */
     static
-    IOC_CONTAINER &
+    IOC &
     Get();
 
     template<class T>
@@ -53,7 +53,7 @@ public:
      * @brief Registers a factory function for creating instances of non-parameterized type T.
      * @param InstanceFactory The factory function for type T.
      */
-    template<IOC::NOT_PARAMETERIZED T>
+    template<Common::Ioc::NOT_PARAMETERIZED T>
     void
     RegisterFactory(
         TYPE_FACTORY<T> InstanceFactory
@@ -69,7 +69,7 @@ public:
      * @brief Registers a factory function for creating instances of parameterized type T.
      * @param InstanceFactory The factory function for type T.
      */
-    template<IOC::PARAMETERIZED T>
+    template<Common::Ioc::PARAMETERIZED T>
     void
     RegisterFactory(
         TYPE_FACTORY_PARAMETERIZED<T> InstanceFactory
@@ -101,7 +101,7 @@ public:
      * @brief Resolves and returns an instance of non-parameterized type T.
      * @return A shared pointer to the resolved instance.
      */
-    template<IOC::NOT_PARAMETERIZED T>
+    template<Common::Ioc::NOT_PARAMETERIZED T>
     std::shared_ptr<T>
     Resolve()
     {
@@ -113,7 +113,7 @@ public:
      * @param IocParams The parameters for creating the instance of type T.
      * @return A shared pointer to the resolved instance.
      */
-    template<IOC::PARAMETERIZED T>
+    template<Common::Ioc::PARAMETERIZED T>
     std::shared_ptr<T>
     Resolve(
         typename T::IOC_PAYLOAD &&IocParams = {}
