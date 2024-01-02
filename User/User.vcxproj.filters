@@ -15,6 +15,9 @@
     <Filter Include="common">
       <UniqueIdentifier>{de40b966-9b97-4423-8ac3-f6c9d8199330}</UniqueIdentifier>
     </Filter>
+    <Filter Include="thirdparty">
+      <UniqueIdentifier>{c5633bec-5a86-4313-b58f-96726ce9a82a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\entry.cpp">
@@ -38,6 +41,12 @@
     <ClCompile Include="common\logprov.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="common\stacktrc.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\assert.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\window.hpp">
@@ -59,6 +68,18 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="common\logprov.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\backward.hpp">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="common\assert.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\macros.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\stacktrc.hpp">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>

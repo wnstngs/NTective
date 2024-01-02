@@ -45,9 +45,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -90,8 +92,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="common\assert.cpp" />
     <ClCompile Include="common\logprov.cpp" />
     <ClCompile Include="common\logsessn.cpp" />
+    <ClCompile Include="common\stacktrc.cpp" />
     <ClCompile Include="core\entry.cpp" />
     <ClCompile Include="common\ioccont.cpp" />
     <ClCompile Include="common\log.cpp" />
@@ -99,12 +103,16 @@
     <ClCompile Include="ui\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\assert.hpp" />
     <ClInclude Include="common\ioccont.hpp" />
     <ClInclude Include="common\log.hpp" />
     <ClInclude Include="common\logprov.hpp" />
+    <ClInclude Include="common\macros.h" />
+    <ClInclude Include="common\stacktrc.hpp" />
     <ClInclude Include="common\win32.h" />
     <ClInclude Include="core\init.hpp" />
     <ClInclude Include="common\logsessn.hpp" />
+    <ClInclude Include="thirdparty\backward.hpp" />
     <ClInclude Include="ui\window.hpp" />
   </ItemGroup>
   <ItemGroup>

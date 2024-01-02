@@ -57,7 +57,7 @@ public:
     LOG_LEVEL LogLevel;
     const wchar_t *SourceFileName;
     const wchar_t *FunctionName;
-    const wchar_t *SourceLine;
+    int SourceLine;
     std::chrono::system_clock::time_point LogTimestamp;
 };
 
@@ -75,7 +75,7 @@ public:
     LOG_CONTROLLER(
         const wchar_t *SourceFile,
         const wchar_t *Function,
-        const wchar_t *Line
+        int Line
     );
 
     /**
@@ -134,8 +134,18 @@ public:
      * @return Reference to the current log controller.
      */
     LOG_CONTROLLER &
-    Session(
+    InSession(
         LOG_SESSION_BASE *Session
+    );
+
+    LOG_CONTROLLER &
+    At(
+        LOG_LEVEL Level
+    );
+
+    LOG_CONTROLLER &
+    WithMessage(
+        std::wstring Message
     );
 
     ~LOG_CONTROLLER();
@@ -144,6 +154,13 @@ private:
     LOG_SESSION_BASE *LogSession_ = nullptr;
 };
 
+LOG_SESSION_BASE *
+GetDefaultSession();
+
+/*!
+ * @brief Basic macro for chain logging.
+ * For example: LOG.Error("My error message");
+ */
 #define LOG Common::Log::LOG_CONTROLLER{ __FILEW__, __FUNCTIONW__, __LINE__ }
 
 };

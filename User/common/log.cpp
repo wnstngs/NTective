@@ -4,14 +4,18 @@
  */
 
 #include "log.hpp"
+
+#include "ioccont.hpp"
 #include "logsessn.hpp"
+
+using namespace Common::Ioc;
 
 namespace Common::Log {
 
 LOG_CONTROLLER::LOG_CONTROLLER(
     const wchar_t *SourceFile,
     const wchar_t *Function,
-    const wchar_t *Line
+    int Line
 ) : LOG_ENTRY{
     .SourceFileName = SourceFile,
     .FunctionName = Function,
@@ -72,11 +76,29 @@ LOG_CONTROLLER::Verbose(
 }
 
 LOG_CONTROLLER &
-LOG_CONTROLLER::Session(
+LOG_CONTROLLER::InSession(
     LOG_SESSION_BASE *Session
 )
 {
     LogSession_ = Session;
+    return *this;
+}
+
+LOG_CONTROLLER &
+LOG_CONTROLLER::At(
+    LOG_LEVEL Level
+)
+{
+    LogLevel = Level;
+    return *this;
+}
+
+LOG_CONTROLLER &
+LOG_CONTROLLER::WithMessage(
+    std::wstring Message
+)
+{
+    LogData = std::move(Message);
     return *this;
 }
 
@@ -85,6 +107,13 @@ LOG_CONTROLLER::~LOG_CONTROLLER()
     if (LogSession_) {
         LogSession_->Write(*this);
     }
+}
+
+LOG_SESSION_BASE *
+GetDefaultSession()
+{
+    static auto defaultSession = IOC::Get().Resolve<LOG_SESSION_BASE>();
+    return defaultSession.get();
 }
 
 }
