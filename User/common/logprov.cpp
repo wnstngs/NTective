@@ -29,14 +29,14 @@ LOG_FORMATTER::FormatLogEntry(
     return stream.str();
 }
 
-DEBUGGER_LOG_PROVIDER::DEBUGGER_LOG_PROVIDER(
+DEBUGGER_LOG_PROVIDER_IMPL::DEBUGGER_LOG_PROVIDER_IMPL(
     std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
 ) : LogFormatter_(std::move(LogFormatter))
 {
 }
 
 void
-DEBUGGER_LOG_PROVIDER::Write(
+DEBUGGER_LOG_PROVIDER_IMPL::Write(
     const LOG_ENTRY &LogEntry
 )
 {
@@ -48,19 +48,19 @@ DEBUGGER_LOG_PROVIDER::Write(
 }
 
 void
-DEBUGGER_LOG_PROVIDER::Flush()
+DEBUGGER_LOG_PROVIDER_IMPL::Flush()
 {
 }
 
 void
-DEBUGGER_LOG_PROVIDER::RegisterFormatter(
+DEBUGGER_LOG_PROVIDER_IMPL::RegisterFormatter(
     std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
 )
 {
     LogFormatter_ = std::move(LogFormatter);
 }
 
-FILE_LOG_PROVIDER::FILE_LOG_PROVIDER(
+FILE_LOG_PROVIDER_IMPL::FILE_LOG_PROVIDER_IMPL(
     const std::filesystem::path &Path,
     std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
 ) : LogFormatter_(std::move(LogFormatter))
@@ -70,7 +70,7 @@ FILE_LOG_PROVIDER::FILE_LOG_PROVIDER(
 }
 
 void
-FILE_LOG_PROVIDER::Write(
+FILE_LOG_PROVIDER_IMPL::Write(
     const LOG_ENTRY &LogEntry
 )
 {
@@ -82,13 +82,13 @@ FILE_LOG_PROVIDER::Write(
 }
 
 void
-FILE_LOG_PROVIDER::Flush()
+FILE_LOG_PROVIDER_IMPL::Flush()
 {
     File_.flush();
 }
 
 void
-FILE_LOG_PROVIDER::RegisterFormatter(
+FILE_LOG_PROVIDER_IMPL::RegisterFormatter(
     std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter
 )
 {

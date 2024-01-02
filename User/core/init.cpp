@@ -15,45 +15,49 @@ using namespace Common::Log;
 void
 InitializeLoggingSystem()
 {
-    IOC::Get().RegisterFactory<LOG_SESSION_BASE>([] {
+    /* Log session factory */
+    GetIoc().RegisterFactory<LOG_SESSION_BASE>([] {
 
         std::vector<std::shared_ptr<LOG_PROVIDER_BASE>> providers{
-            IOC::Get().Resolve<DEBUGGER_LOG_PROVIDER>(),
-            IOC::Get().Resolve<FILE_LOG_PROVIDER>()
+            GetIoc().Resolve<DEBUGGER_LOG_PROVIDER_BASE>(),
+            GetIoc().Resolve<FILE_LOG_PROVIDER_BASE>()
         };
 
         return std::make_shared<LOG_SESSION_IMPL>(std::move(providers));
     });
 
-    IOC::Get().RegisterFactory<DEBUGGER_LOG_PROVIDER>([] {
-        return std::make_shared<DEBUGGER_LOG_PROVIDER>(IOC::Get().Resolve<LOG_FORMATTER_BASE>());
+    /* Log providers */
+    GetIoc().RegisterFactory<DEBUGGER_LOG_PROVIDER_BASE>([] {
+        return std::make_shared<DEBUGGER_LOG_PROVIDER_IMPL>(GetIoc().Resolve<LOG_FORMATTER_BASE>());
     });
-    IOC::Get().RegisterFactory<FILE_LOG_PROVIDER>([] {
-        return std::make_shared<FILE_LOG_PROVIDER>("logs\\log.txt",
-                                                   IOC::Get().Resolve<LOG_FORMATTER_BASE>());
+    GetIoc().RegisterFactory<FILE_LOG_PROVIDER_BASE>([] {
+        return std::make_shared<FILE_LOG_PROVIDER_IMPL>("logs\\log.txt",
+                                                   GetIoc().Resolve<LOG_FORMATTER_BASE>());
     });
 
-    IOC::Get().RegisterFactory<LOG_FORMATTER_BASE>([] {
+    /* Log formatter */
+    GetIoc().RegisterFactory<LOG_FORMATTER_BASE>([] {
         return std::make_shared<LOG_FORMATTER>();
     });
 
-    IOC::Get().RegisterSingleton<LOG_SESSION_BASE>([] {
-        return IOC::Get().Resolve<LOG_SESSION_BASE>();
+    /* Log session singleton */
+    GetIoc().RegisterSingleton<LOG_SESSION_BASE>([] {
+        return GetIoc().Resolve<LOG_SESSION_BASE>();
     });
 }
 
 void
 InitializeUiSystem()
 {
-    IOC::Get().RegisterFactory<WINDOW_BASE>([](WINDOW_BASE::IOC_PAYLOAD IocParams) {
+    GetIoc().RegisterFactory<WINDOW_BASE>([](WINDOW_BASE::IOC_PAYLOAD IocParams) {
         return std::make_shared<MAIN_WINDOW>(std::move(IocParams.WindowClass));
     });
 
-    IOC::Get().RegisterFactory<WINDOW_CLASS_BASE>([] {
+    GetIoc().RegisterFactory<WINDOW_CLASS_BASE>([] {
         return std::make_shared<WINDOW_CLASS>();
     });
 
-    IOC::Get().RegisterSingleton<WINDOW_CLASS_BASE>([] {
-        return IOC::Get().Resolve<WINDOW_CLASS_BASE>();
+    GetIoc().RegisterSingleton<WINDOW_CLASS_BASE>([] {
+        return GetIoc().Resolve<WINDOW_CLASS_BASE>();
     });
 }

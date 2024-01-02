@@ -72,9 +72,15 @@ public:
 /**
  * @brief Log provider that outputs log entries to the MSVC debugger.
  */
-class DEBUGGER_LOG_PROVIDER : public LOG_PROVIDER_BASE {
+class DEBUGGER_LOG_PROVIDER_BASE : public LOG_PROVIDER_BASE {
+};
+
+/**
+ * @brief Log provider that outputs log entries to the MSVC debugger.
+ */
+class DEBUGGER_LOG_PROVIDER_IMPL : public DEBUGGER_LOG_PROVIDER_BASE {
 public:
-    DEBUGGER_LOG_PROVIDER(
+    DEBUGGER_LOG_PROVIDER_IMPL(
         std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter = {}
     );
 
@@ -98,13 +104,19 @@ private:
 /**
  * @brief Log provider that writes log entries to a file.
  */
-class FILE_LOG_PROVIDER : public LOG_PROVIDER_BASE {
+class FILE_LOG_PROVIDER_BASE : public LOG_PROVIDER_BASE {
+};
+
+/**
+ * @brief Log provider that writes log entries to a file.
+ */
+class FILE_LOG_PROVIDER_IMPL : public FILE_LOG_PROVIDER_BASE {
 public:
     /**
      * @brief Constructs a FILE_LOG_PROVIDER with the specified file path.
      * @param Path The path to the log file.
      */
-    FILE_LOG_PROVIDER(
+    FILE_LOG_PROVIDER_IMPL(
         const std::filesystem::path &Path,
         std::shared_ptr<LOG_FORMATTER_BASE> LogFormatter = {}
     );

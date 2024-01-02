@@ -112,7 +112,7 @@ LOG_CONTROLLER::~LOG_CONTROLLER()
 LOG_SESSION_BASE *
 GetDefaultSession()
 {
-    static auto defaultSession = IOC::Get().Resolve<LOG_SESSION_BASE>();
+    static auto defaultSession = GetIoc().Resolve<LOG_SESSION_BASE>();
     return defaultSession.get();
 }
 
