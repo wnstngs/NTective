@@ -15,7 +15,15 @@
 #include <memory>
 #include <typeindex>
 
+#include "assert.hpp"
+#include "strutil.hpp"
+
 namespace Common::Ioc {
+
+class FACTORY_NOT_FOUND_EXCEPTION : public Util::BUF_EXCEPTION {
+public:
+    using BUF_EXCEPTION::BUF_EXCEPTION;
+};
 
 /*!
  * @brief Concept to identify types with payload.
@@ -104,8 +112,8 @@ private:
     {
         const auto iterator = IocContainerMap_.find(typeid(T));
         if (iterator == IocContainerMap_.end()) {
-            throw std::runtime_error{
-                std::format("Failed to find a factory for \"{}\" in the factory map",
+            throw FACTORY_NOT_FOUND_EXCEPTION{
+                std::format("Failed to find factory for \"{}\" in the factory map",
                             typeid(T).name())
             };
         }
@@ -115,11 +123,10 @@ private:
         try {
             return std::any_cast<G>(entry)(std::forward<P>(Payload)...);
         } catch (const std::bad_any_cast &) {
-            throw std::runtime_error{
-                std::format("Failed to find a factory or instance for \"{}\" mapped from \"{}\"",
-                            typeid(G).name(),
-                            entry.type().name())
-            };
+            NTECTIVE_CHECK_FAIL.Message(std::format(L"Could not resolve factory for type \"{}\" mapped from \"{}\"",
+                                                    Util::StringToWstring(typeid(G).name()),
+                                                    Util::StringToWstring(entry.type().name())))
+                               .Throw();
         }
     }
 
@@ -171,7 +178,7 @@ public:
         const auto iterator = SingletonContainerMap_.find(typeid(T));
 
         if (iterator == SingletonContainerMap_.end()) {
-            throw std::runtime_error{
+            throw FACTORY_NOT_FOUND_EXCEPTION{
                 std::format("Could not find entry for type \"{}\" in singleton container",
                             typeid(T).name())
             };
@@ -190,10 +197,10 @@ public:
             return instance;
 
         } catch (const std::bad_any_cast &) {
-            throw std::runtime_error{
-                std::format("Could not resolve singleton for type \"{}\" in singleton container",
-                            typeid(T).name())
-            };
+            NTECTIVE_CHECK_FAIL.Message(std::format(L"Could not resolve singleton for type \"{}\" mapped from \"{}\"",
+                                                    Util::StringToWstring(entry.type().name()),
+                                                    Util::StringToWstring(typeid(TYPE_FACTORY<T>).name())))
+                               .Throw();
         }
     }
 

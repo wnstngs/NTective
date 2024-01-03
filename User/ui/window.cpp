@@ -4,8 +4,10 @@
  */
 
 #include "window.hpp"
+#include "../common/log.hpp"
+#include "../common/strutil.hpp"
 
-#include <stdexcept>
+#include <exception>
 
 LRESULT
 WINDOW_CLASS_BASE::ForwardMessage(
@@ -42,7 +44,7 @@ WINDOW_CLASS::WINDOW_CLASS(
     Atom_ = RegisterClassExW(&windowClass);
 
     if (!Atom_) {
-        // TODO: Log
+        LOG.Error(L"Failed to register window class");
         throw std::runtime_error("Failed to register window class");
     }
 }
@@ -50,7 +52,7 @@ WINDOW_CLASS::WINDOW_CLASS(
 WINDOW_CLASS::~WINDOW_CLASS()
 {
     if (!UnregisterClass(MAKEINTATOM(Atom_), Instance_)) {
-        // TODO: Log
+        LOG.Warning(L"Failed to unregister window class");
     }
 }
 
@@ -82,14 +84,14 @@ WINDOW_CLASS::HandleMessageSetup(
                           GWLP_USERDATA,
                           reinterpret_cast<LONG_PTR>(mainWindow));
         if (auto lastError = GetLastError()) {
-            // TODO: Log
+            LOG.Warning(L"SetWindowLongPtrW failed");
         }
 
         SetWindowLongPtrW(Handle,
                           GWLP_WNDPROC,
                           reinterpret_cast<LONG_PTR>(&WINDOW_CLASS::HandleMessageThunk));
         if (auto lastError = GetLastError()) {
-            // TODO: Log
+            LOG.Warning(L"SetWindowLongPtrW failed");
         }
 
         return ForwardMessage(mainWindow,
@@ -147,7 +149,7 @@ MAIN_WINDOW::MAIN_WINDOW(
                               this);
 
     if (!Handle_) {
-        // TODO: Log
+        LOG.Error(L"Failed to create window");
         throw std::runtime_error("Failed to create window");
     }
 }
@@ -155,7 +157,7 @@ MAIN_WINDOW::MAIN_WINDOW(
 MAIN_WINDOW::~MAIN_WINDOW()
 {
     if (!DestroyWindow(Handle_)) {
-        // TODO: Log
+        LOG.Warning(L"Failed to destroy window");
     }
 }
 
@@ -184,10 +186,11 @@ MAIN_WINDOW::HandleMessage(
         default:
             return DefWindowProcW(Handle, Message, WParam, LParam);
         }
-    } catch (const std::exception &) {
-        // TODO: Log
+    } catch (const std::exception &e) {
+        LOG.Error(std::format(L"An exception occurred: {}",
+                              Common::Util::StringToWstring(e.what())));
     } catch (...) {
-        // TODO: Log
+        LOG.Error(L"An unknown exception occurred");
     }
     return DefWindowProcW(Handle, Message, WParam, LParam);
 }

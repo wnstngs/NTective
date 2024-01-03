@@ -1,6 +1,6 @@
 ﻿/*!
  *  @file       assert.cpp
- *  @brief      Assertion.
+ *  @brief      Assertion utility.
  */
 
 #include "assert.hpp"
@@ -48,6 +48,22 @@ ASSERTION::Message(const std::wstring &Message)
     Stream_
         << L"  Message: "
         << Message
+        << L"\n";
+    return *this;
+}
+
+template<typename T>
+ASSERTION &
+ASSERTION::Watch(
+    T &&Value,
+    const wchar_t *Name
+)
+{
+    Stream_
+        << L"\t"
+        << Name
+        << L" => "
+        << std::forward<T>(Value)
         << L"\n";
     return *this;
 }

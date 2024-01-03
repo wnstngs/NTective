@@ -1,6 +1,6 @@
 ﻿/*!
  *  @file       assert.hpp
- *  @brief      Assertion.
+ *  @brief      Assertion utility.
  */
 
 #pragma once
@@ -20,8 +20,6 @@ enum class ASSERTION_EFFECT {
 };
 
 class ASSERTION_FAILED_EXCEPTION : public BUF_EXCEPTION {
-    using Base = BUF_EXCEPTION;
-
 public:
     using BUF_EXCEPTION::BUF_EXCEPTION;
 };
@@ -48,16 +46,7 @@ public:
     Watch(
         T &&Value,
         const wchar_t *Name
-    )
-    {
-        Stream_
-            << L"\t"
-            << Name
-            << L" => "
-            << std::forward<T>(Value)
-            << L"\n";
-        return *this;
-    }
+    );
 
     [[noreturn]]
     void
@@ -102,7 +91,7 @@ private:
                                                      : Common::Util::ASSERTION_EFFECT::Log          \
                                              }
 
-#define NTECTIVE_CHECK_FAIL(Expression) (void)Common::Util::ASSERTION{                          \
+#define NTECTIVE_CHECK_FAIL             (void)Common::Util::ASSERTION{                          \
                                             L"[Always Fail]",                                   \
                                             __FILEW__,                                          \
                                             __FUNCTIONW__,                                      \
