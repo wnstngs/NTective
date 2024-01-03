@@ -21,8 +21,6 @@ wWinMain(
     try {
         InitializeLoggingSystem();
         InitializeUiSystem();
-
-        LOG.Info(L"TEST");
     } catch (const std::exception &) {
         // TODO: Log
     } catch (...) {

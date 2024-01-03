@@ -23,9 +23,6 @@
     <ClCompile Include="core\entry.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="ui\window.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="common\ioc.cpp">
       <Filter>common</Filter>
     </ClCompile>
@@ -53,9 +50,15 @@
     <ClCompile Include="common\excption.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="ui\winclass.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\winimpl.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ui\window.hpp">
+    <ClInclude Include="ui\winbase.hpp">
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="common\ioc.hpp">
@@ -93,6 +96,12 @@
     </ClInclude>
     <ClInclude Include="common\strutil.hpp">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\winclass.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\winimpl.hpp">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

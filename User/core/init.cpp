@@ -7,7 +7,8 @@
 #include "../common/ioc.hpp"
 #include "../common/logprov.hpp"
 #include "../common/logsessn.hpp"
-#include "../ui/window.hpp"
+#include "../ui/winbase.hpp"
+#include "../ui/winimpl.hpp"
 
 using namespace Common;
 using namespace Common::Log;
@@ -47,15 +48,15 @@ InitializeLoggingSystem()
 void
 InitializeUiSystem()
 {
-    Ioc::GetIoc().RegisterFactory<WINDOW_BASE>([](WINDOW_BASE::IOC_PAYLOAD IocParams) {
-        return std::make_shared<MAIN_WINDOW>(IocParams.WindowClass
-                                                 ? IocParams.WindowClass
-                                                 : Ioc::GetSingletons().Resolve<WINDOW_CLASS_BASE>());
+    Ioc::GetIoc().RegisterFactory<Ui::WINDOW_BASE>([](Ui::WINDOW_BASE::IOC_PAYLOAD IocParams) {
+        return std::make_shared<Ui::MAIN_WINDOW>(IocParams.WindowClass
+                                                     ? IocParams.WindowClass
+                                                     : Ioc::GetSingletons().Resolve<Ui::WINDOW_CLASS_BASE>());
     });
 
-    Ioc::GetIoc().RegisterFactory<WINDOW_CLASS_BASE>([] {
-        return std::make_shared<WINDOW_CLASS>();
+    Ioc::GetIoc().RegisterFactory<Ui::WINDOW_CLASS_BASE>([] {
+        return std::make_shared<Ui::WINDOW_CLASS>();
     });
 
-    Ioc::GetSingletons().RegisterDelegateFactory<WINDOW_CLASS_BASE>();
+    Ioc::GetSingletons().RegisterDelegateFactory<Ui::WINDOW_CLASS_BASE>();
 }

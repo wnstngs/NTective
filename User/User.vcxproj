@@ -106,7 +106,8 @@
     <ClCompile Include="common\ioc.cpp" />
     <ClCompile Include="common\log.cpp" />
     <ClCompile Include="core\init.cpp" />
-    <ClCompile Include="ui\window.cpp" />
+    <ClCompile Include="ui\winclass.cpp" />
+    <ClCompile Include="ui\winimpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\assert.hpp" />
@@ -121,7 +122,9 @@
     <ClInclude Include="core\init.hpp" />
     <ClInclude Include="common\logsessn.hpp" />
     <ClInclude Include="thirdparty\backward.hpp" />
-    <ClInclude Include="ui\window.hpp" />
+    <ClInclude Include="ui\winclass.hpp" />
+    <ClInclude Include="ui\winbase.hpp" />
+    <ClInclude Include="ui\winimpl.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />
