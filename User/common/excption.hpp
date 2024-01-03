@@ -1,6 +1,9 @@
 ﻿/*!
  *  @file       excption.hpp
  *  @brief      Custom exception support.
+ *
+ *  The idea for the assertion and exception infrastructure belongs
+ *  to Planetchili of Intel Corp., IntelPresentMon project.
  */
 
 #pragma once

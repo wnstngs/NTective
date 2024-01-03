@@ -1,6 +1,9 @@
 ﻿/*!
  *  @file       assert.hpp
  *  @brief      Assertion utility.
+ *
+ *  The idea for the assertion and exception infrastructure belongs
+ *  to Planetchili of Intel Corp., IntelPresentMon project.
  */
 
 #pragma once
