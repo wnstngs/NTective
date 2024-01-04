@@ -13,8 +13,8 @@ JOB_QUEUE::PopAndExecute()
     JOB job;
     {
         std::lock_guard lock{Lock_};
-        job = std::move(JobQueue_.front());
-        JobQueue_.pop_front();
+        job = std::move(Jobs_.front());
+        Jobs_.pop_front();
     }
     job();
 }
@@ -25,7 +25,7 @@ JOB_QUEUE::EnqueueInternal(
 )
 {
     std::lock_guard lock{Lock_};
-    JobQueue_.push_back(std::move(Job));
+    Jobs_.push_back(std::move(Job));
 }
 
 }
