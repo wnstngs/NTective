@@ -59,6 +59,7 @@ public:
     const wchar_t *FunctionName;
     int SourceLine;
     std::chrono::system_clock::time_point LogTimestamp;
+    std::optional<unsigned int> HResult;
 };
 
 /**
@@ -147,6 +148,9 @@ public:
     WithMessage(
         std::wstring Message
     );
+
+    LOG_CONTROLLER &
+    Hr();
 
     ~LOG_CONTROLLER();
 

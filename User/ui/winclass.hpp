@@ -41,7 +41,7 @@ protected:
 class WINDOW_CLASS : public WINDOW_CLASS_BASE {
 public:
     WINDOW_CLASS(
-        const std::wstring &ClassName = DefaultWindowClassName
+        const std::wstring &ClassName = L"NTectiveUserWindow"
     );
 
     ~WINDOW_CLASS() override;
@@ -52,14 +52,10 @@ public:
     HINSTANCE
     GetInstance() override;
 
-protected:
-    static constexpr std::wstring DefaultWindowClassName = L"NTective$UM";
-
 private:
     static
     LRESULT
     CALLBACK
-
     HandleMessageSetup(
         HWND Handle,
         UINT Message,
@@ -70,7 +66,6 @@ private:
     static
     LRESULT
     CALLBACK
-
     HandleMessageThunk(
         HWND Handle,
         UINT Message,

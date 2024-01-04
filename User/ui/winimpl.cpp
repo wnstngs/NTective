@@ -9,47 +9,63 @@
 #include "../common/strutil.hpp"
 
 namespace Ui {
-
 MAIN_WINDOW::MAIN_WINDOW(
     std::shared_ptr<WINDOW_CLASS_BASE> WindowClass,
     const std::wstring &Title
-)
-    : WindowClass_(std::move(WindowClass))
-{
-    constexpr DWORD windowStyles = WS_VISIBLE | WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
-    constexpr DWORD windowStylesEx = 0;
-    const HMODULE moduleHandle = GetModuleHandleW(nullptr);
-
-    Handle_ = CreateWindowExW(windowStylesEx,
-                              MAKEINTATOM(WindowClass_->GetAtom()),
-                              Title.c_str(),
-                              windowStyles,
-                              CW_USEDEFAULT,
-                              CW_USEDEFAULT,
-                              600,
-                              400,
-                              nullptr,
-                              nullptr,
-                              moduleHandle,
-                              this);
-
-    if (!Handle_) {
-        LOG.Error(L"Failed to create window");
-        throw std::runtime_error("Failed to create window");
+) : WindowClass_(std::move(WindowClass)),
+    MessageLoopThread_{
+        &MAIN_WINDOW::MessageLoop,
+        this
     }
+{
+    auto future = JobQueue_.Enqueue([=, this] {
+        constexpr DWORD windowStyles = WS_VISIBLE | WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
+        constexpr DWORD windowStylesEx = 0;
+        const HMODULE moduleHandle = GetModuleHandleW(nullptr);
+
+        Handle_ = CreateWindowExW(windowStylesEx,
+                                  MAKEINTATOM(WindowClass_->GetAtom()),
+                                  Title.c_str(),
+                                  windowStyles,
+                                  CW_USEDEFAULT,
+                                  CW_USEDEFAULT,
+                                  600,
+                                  400,
+                                  nullptr,
+                                  nullptr,
+                                  moduleHandle,
+                                  this);
+
+        if (!Handle_) {
+            LOG.Error(L"Failed to create window");
+            throw WINDOW_EXCEPTION{"Failed to create window"};
+        }
+    });
+
+    StartSignal_.release();
+    future.get();
 }
 
 MAIN_WINDOW::~MAIN_WINDOW()
 {
-    if (!DestroyWindow(Handle_)) {
-        LOG.Warning(L"Failed to destroy window");
-    }
+    Dispatch([this] {
+        if (!DestroyWindow(Handle_)) {
+            LOG.Warning(L"Failed to destroy window");
+        }
+    });
+    MessageLoopThread_.join();
 }
 
 HWND
 MAIN_WINDOW::GetHandle()
 {
     return Handle_;
+}
+
+bool
+MAIN_WINDOW::IsClosing()
+{
+    return IsClosing_;
 }
 
 LRESULT
@@ -67,6 +83,10 @@ MAIN_WINDOW::HandleMessage(
             PostQuitMessage(0);
             return 0;
         case WM_CLOSE:
+            IsClosing_ = true;
+            return 0;
+        case WM_JOB:
+            JobQueue_.PopAndExecute();
             return 0;
         default:
             return DefWindowProcW(Handle, Message, WParam, LParam);
@@ -74,8 +94,7 @@ MAIN_WINDOW::HandleMessage(
     } catch (const std::exception &e) {
         LOG.Error(std::format(L"An exception occurred: {}",
                               Common::Util::StringToWstring(e.what())));
-    }
-    catch (...) {
+    } catch (...) {
         LOG.Error(L"An unknown exception occurred");
     }
     return DefWindowProcW(Handle, Message, WParam, LParam);
@@ -84,10 +103,22 @@ MAIN_WINDOW::HandleMessage(
 void
 MAIN_WINDOW::MessageLoop()
 {
+    StartSignal_.acquire();
+    JobQueue_.PopAndExecute();
+
     MSG message{};
     while (GetMessageW(&message, Handle_, 0, 0)) {
         TranslateMessage(&message);
         DispatchMessageW(&message);
+    }
+}
+
+void
+MAIN_WINDOW::JobDispatch()
+{
+    if (!PostMessageW(Handle_, WM_JOB, 0, 0)) {
+        LOG.Error(L"Failed to post job message");
+        throw WINDOW_EXCEPTION{"Failed to post job message"};
     }
 }
 

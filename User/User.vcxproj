@@ -106,6 +106,7 @@
     <ClCompile Include="common\ioc.cpp" />
     <ClCompile Include="common\log.cpp" />
     <ClCompile Include="core\init.cpp" />
+    <ClCompile Include="core\jobqueue.cpp" />
     <ClCompile Include="ui\winclass.cpp" />
     <ClCompile Include="ui\winimpl.cpp" />
   </ItemGroup>
@@ -121,6 +122,7 @@
     <ClInclude Include="common\win32.h" />
     <ClInclude Include="core\init.hpp" />
     <ClInclude Include="common\logsessn.hpp" />
+    <ClInclude Include="core\jobqueue.hpp" />
     <ClInclude Include="thirdparty\backward.hpp" />
     <ClInclude Include="ui\winclass.hpp" />
     <ClInclude Include="ui\winbase.hpp" />

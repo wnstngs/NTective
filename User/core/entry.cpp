@@ -7,7 +7,10 @@
 
 #include "init.hpp"
 #include "../common/log.hpp"
+#include "../common/ioc.hpp"
 #include "../common/win32.h"
+#include "../ui/winbase.hpp"
+#include "../ui/winimpl.hpp"
 
 int
 WINAPI
@@ -19,12 +22,18 @@ wWinMain(
 )
 {
     try {
+
+        /* Register IoC factories and singletons */
         InitializeLoggingSystem();
         InitializeUiSystem();
-    } catch (const std::exception &) {
-        // TODO: Log
-    } catch (...) {
-        // TODO: Log
+
+        std::shared_ptr<Ui::WINDOW_BASE> mainWindow = Common::Ioc::GetIoc().Resolve<Ui::WINDOW_BASE>();
+
+        while (!mainWindow->IsClosing());
+
+    } catch (const std::exception &e) {
+        LOG.Error(Common::Util::StringToWstring(e.what()));
+        return -1;
     }
 
     return 0;

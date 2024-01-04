@@ -100,14 +100,14 @@ public:
         typename T::IOC_PAYLOAD &&IocParams = {}
     )
     {
-        return ResolveInternal<T, TYPE_FACTORY_PARAMETERIZED<T>>(std::forward<typename T::IocParams>(IocParams));
+        return ResolveInternal<T, TYPE_FACTORY_PARAMETERIZED<T>>(std::forward<typename T::IOC_PAYLOAD>(IocParams));
     }
 
 private:
     template<class T, class G, class... P>
     std::shared_ptr<T>
     ResolveInternal(
-        P... Payload
+        P&&... Payload
     )
     {
         const auto iterator = IocContainerMap_.find(typeid(T));

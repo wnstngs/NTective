@@ -5,6 +5,8 @@
 
 #include "winclass.hpp"
 #include "winbase.hpp"
+#include "winimpl.hpp"
+#include "../common/assert.hpp"
 #include "../common/log.hpp"
 
 namespace Ui {
@@ -23,12 +25,11 @@ WINDOW_CLASS_BASE::ForwardMessage(
 
 WINDOW_CLASS::WINDOW_CLASS(
     const std::wstring &ClassName
-)
-    : Instance_(GetModuleHandle(nullptr))
+) : Instance_(GetModuleHandle(nullptr))
 {
     const WNDCLASSEXW windowClass{
         .cbSize = sizeof(windowClass),
-        .style = CS_OWNDC,
+        .style = CS_OWNDC | CS_DBLCLKS,
         .lpfnWndProc = &WINDOW_CLASS::HandleMessageSetup,
         .cbClsExtra = 0,
         .cbWndExtra = 0,
@@ -44,8 +45,8 @@ WINDOW_CLASS::WINDOW_CLASS(
     Atom_ = RegisterClassExW(&windowClass);
 
     if (!Atom_) {
-        LOG.Error(L"Failed to register window class");
-        throw std::runtime_error("Failed to register window class");
+        LOG.Error(L"Failed to register window class").Hr();
+        throw WINDOW_EXCEPTION{"Failed to register window class"};
     }
 }
 
@@ -69,7 +70,7 @@ WINDOW_CLASS::GetInstance()
 }
 
 LRESULT
-WINDOW_CLASS::HandleMessageSetup(
+WINDOW_CLASS::  HandleMessageSetup(
     HWND Handle,
     UINT Message,
     WPARAM WParam,
@@ -79,6 +80,7 @@ WINDOW_CLASS::HandleMessageSetup(
     if (Message == WM_NCCREATE) {
         const CREATESTRUCTW *const createStruct = reinterpret_cast<CREATESTRUCTW *>(LParam);
         const auto mainWindow = static_cast<WINDOW_BASE *>(createStruct->lpCreateParams);
+        NTECTIVE_CHECK(mainWindow);
 
         SetWindowLongPtrW(Handle,
                           GWLP_USERDATA,

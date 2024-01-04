@@ -21,12 +21,49 @@ LOG_FORMATTER::FormatLogEntry(
                           logLevelName,
                           std::chrono::zoned_time{std::chrono::current_zone(), LogEntry.LogTimestamp},
                           LogEntry.LogData);
-    stream << std::format(L"\n  >> at {} [{} @ {}]\n",
+
+    if (LogEntry.HResult) {
+        stream << std::format(L"\n  !HRESULT [{:#010x}]: {}",
+                              *LogEntry.HResult,
+                              FormatHresult(*LogEntry.HResult));
+    }
+
+    stream << std::format(L"\n  >> at {} [{} @ {}]\n\n",
                           LogEntry.FunctionName,
                           LogEntry.SourceFileName,
                           LogEntry.SourceLine);
 
     return stream.str();
+}
+
+std::wstring
+LOG_FORMATTER::FormatHresult(unsigned Hresult)
+{
+    wchar_t *descriptionWinalloc = nullptr;
+    std::wstring hresultDescription;
+    const auto status = FormatMessageW(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        nullptr,
+        Hresult,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        reinterpret_cast<LPWSTR>(&descriptionWinalloc),
+        0,
+        nullptr
+    );
+
+    if (!status) {
+        LOG.Warning(L"Failed formatting windows error");
+    } else {
+        hresultDescription = descriptionWinalloc;
+        if (LocalFree(descriptionWinalloc)) {
+            LOG.Warning(L"Failed freeing memory for windows error formatting");
+        }
+        if (hresultDescription.ends_with(L"\r\n")) {
+            hresultDescription.resize(hresultDescription.size() - 2);
+        }
+    }
+
+    return hresultDescription;
 }
 
 DEBUGGER_LOG_PROVIDER_IMPL::DEBUGGER_LOG_PROVIDER_IMPL(

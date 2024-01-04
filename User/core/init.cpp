@@ -48,15 +48,19 @@ InitializeLoggingSystem()
 void
 InitializeUiSystem()
 {
+    /* Main window */
     Ioc::GetIoc().RegisterFactory<Ui::WINDOW_BASE>([](Ui::WINDOW_BASE::IOC_PAYLOAD IocParams) {
         return std::make_shared<Ui::MAIN_WINDOW>(IocParams.WindowClass
                                                      ? IocParams.WindowClass
-                                                     : Ioc::GetSingletons().Resolve<Ui::WINDOW_CLASS_BASE>());
+                                                     : Ioc::GetSingletons().Resolve<Ui::WINDOW_CLASS_BASE>(),
+                                                 IocParams.Title.value_or(L"NTective — NT Detective"));
     });
 
+    /* Window class factory */
     Ioc::GetIoc().RegisterFactory<Ui::WINDOW_CLASS_BASE>([] {
         return std::make_shared<Ui::WINDOW_CLASS>();
     });
 
+    /* Window class singleton */
     Ioc::GetSingletons().RegisterDelegateFactory<Ui::WINDOW_CLASS_BASE>();
 }

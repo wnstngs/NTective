@@ -56,6 +56,9 @@
     <ClCompile Include="ui\winimpl.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="core\jobqueue.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\winbase.hpp">
@@ -102,6 +105,9 @@
     </ClInclude>
     <ClInclude Include="ui\winimpl.hpp">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="core\jobqueue.hpp">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -32,6 +32,12 @@ public:
     FormatLogEntry(
         const LOG_ENTRY &LogEntry
     ) override;
+
+private:
+    std::wstring
+    FormatHresult(
+        unsigned int Hresult
+    );
 };
 
 /**

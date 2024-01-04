@@ -28,6 +28,10 @@ public:
     HWND
     GetHandle() = 0;
 
+    virtual
+    bool
+    IsClosing() = 0;
+
     /*!
      * @brief IoC container payload class for storing window-related parameters.
      */

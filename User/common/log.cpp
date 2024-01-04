@@ -7,6 +7,7 @@
 
 #include "ioc.hpp"
 #include "logsessn.hpp"
+#include "win32.h"
 
 using namespace Common::Ioc;
 
@@ -99,6 +100,13 @@ LOG_CONTROLLER::WithMessage(
 )
 {
     LogData = std::move(Message);
+    return *this;
+}
+
+LOG_CONTROLLER &
+LOG_CONTROLLER::Hr()
+{
+    HResult = GetLastError();
     return *this;
 }
 
