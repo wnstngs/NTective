@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "backend.hpp"
 #include "winclass.hpp"
 #include "../common/win32.h"
 
@@ -27,6 +28,10 @@ public:
     virtual
     HWND
     GetHandle() = 0;
+
+    virtual
+    GFX_BACKEND &
+    GetRenderer() = 0;
 
     virtual
     bool

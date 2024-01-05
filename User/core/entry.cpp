@@ -29,7 +29,11 @@ wWinMain(
 
         std::shared_ptr<Ui::WINDOW_BASE> mainWindow = Common::Ioc::GetIoc().Resolve<Ui::WINDOW_BASE>();
 
-        while (!mainWindow->IsClosing());
+        while (!mainWindow->IsClosing()) {
+            float color[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+            mainWindow->GetRenderer().ClearBuffer(color);
+            mainWindow->GetRenderer().EndScene();
+        }
 
     } catch (const std::exception &e) {
         LOG.Error(Common::Util::StringToWstring(e.what()));

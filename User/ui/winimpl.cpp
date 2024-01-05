@@ -19,7 +19,7 @@ MAIN_WINDOW::MAIN_WINDOW(
     }
 {
     auto future = JobQueue_.Enqueue([=, this] {
-        constexpr DWORD windowStyles = WS_VISIBLE | WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
+        constexpr DWORD windowStyles = WS_VISIBLE | WS_OVERLAPPEDWINDOW;
         constexpr DWORD windowStylesEx = 0;
         const HMODULE moduleHandle = GetModuleHandleW(nullptr);
 
@@ -40,6 +40,8 @@ MAIN_WINDOW::MAIN_WINDOW(
             LOG.Error(L"Failed to create window");
             throw WINDOW_EXCEPTION{"Failed to create window"};
         }
+
+        GfxBackend_ = std::make_unique<GFX_BACKEND>(Handle_);
     });
 
     StartSignal_.release();
@@ -60,6 +62,12 @@ HWND
 MAIN_WINDOW::GetHandle()
 {
     return Handle_;
+}
+
+GFX_BACKEND &
+MAIN_WINDOW::GetRenderer()
+{
+    return *GfxBackend_;
 }
 
 bool

@@ -8,6 +8,7 @@
 #include <thread>
 #include <semaphore>
 
+#include "backend.hpp"
 #include "winbase.hpp"
 #include "../common/excption.hpp"
 #include "../core/jobqueue.hpp"
@@ -35,6 +36,9 @@ public:
 
     HWND
     GetHandle() override;
+
+    GFX_BACKEND &
+    GetRenderer() override;
 
     bool
     IsClosing() override;
@@ -69,6 +73,7 @@ protected:
 protected:
     std::shared_ptr<WINDOW_CLASS_BASE> WindowClass_;
     HWND Handle_;
+    std::unique_ptr<GFX_BACKEND> GfxBackend_;
     std::thread MessageLoopThread_;
     std::binary_semaphore StartSignal_{ 0 };
     std::atomic<bool> IsClosing_ = false;
