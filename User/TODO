@@ -4,6 +4,6 @@
 * [X] Common assertion infrastructure
 * [ ] Stack trace printing
 * [X] Exception infrastructure and fine-grained per-component exceptions
-* [ ] DirectX graphics backend
+* [X] DirectX graphics backend
 * [ ] Dear ImGui integration
 * [ ] Driver loader
