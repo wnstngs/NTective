@@ -10,6 +10,9 @@
 #include <deque>
 #include <future>
 
+#include "../common/log.hpp"
+#include "../common/macros.h"
+
 namespace Core {
 
 /*!

@@ -1,4 +1,11 @@
-﻿#include "backend.hpp"
+﻿/*!
+ *  @file       backend.cpp
+ *  @brief      DirectX 11 graphics backend for UI.
+ */
+
+#include "backend.hpp"
+
+#include "imgui_impl_dx11.h"
 #include "../common/log.hpp"
 
 namespace Ui {
@@ -80,6 +87,12 @@ GFX_BACKEND::ClearBuffer(
     }
 
     DeviceContext_->ClearRenderTargetView(RenderTargetView_, rgbaColor);
+}
+
+void
+GFX_BACKEND::InitImgui()
+{
+    ImGui_ImplDX11_Init(Device_, DeviceContext_);
 }
 
 void

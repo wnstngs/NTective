@@ -62,6 +62,33 @@
     <ClCompile Include="ui\backend.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="thirdparty\imgui\imgui.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui\imgui_demo.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui\imgui_draw.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui\imgui_tables.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui\imgui_widgets.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\imguimgr.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui\misc\cpp\imgui_stdlib.cpp">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\winbase.hpp">
@@ -84,9 +111,6 @@
     </ClInclude>
     <ClInclude Include="common\logprov.hpp">
       <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="thirdparty\backward\backward.hpp">
-      <Filter>thirdparty</Filter>
     </ClInclude>
     <ClInclude Include="common\assert.hpp">
       <Filter>common</Filter>
@@ -115,8 +139,46 @@
     <ClInclude Include="ui\backend.hpp">
       <Filter>ui</Filter>
     </ClInclude>
+    <ClInclude Include="ui\imguimgr.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\imconfig.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\imgui.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\imgui_internal.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\imstb_rectpack.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\imstb_textedit.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\imstb_truetype.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\backends\imgui_impl_dx11.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\backends\imgui_impl_win32.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui\misc\cpp\imgui_stdlib.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />
+    <None Include="thirdparty\imgui\misc\debuggers\imgui.natstepfilter">
+      <Filter>thirdparty</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="thirdparty\imgui\misc\debuggers\imgui.natvis">
+      <Filter>thirdparty</Filter>
+    </Natvis>
   </ItemGroup>
 </Project>

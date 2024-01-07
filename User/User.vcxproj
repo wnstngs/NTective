@@ -68,7 +68,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty\imgui\backends;$(ProjectDir)thirdparty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,7 +88,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty\imgui\backends;$(ProjectDir)thirdparty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,7 +109,16 @@
     <ClCompile Include="common\log.cpp" />
     <ClCompile Include="core\init.cpp" />
     <ClCompile Include="core\jobqueue.cpp" />
+    <ClCompile Include="thirdparty\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="thirdparty\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui_demo.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui_draw.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui_tables.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="thirdparty\imgui\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="ui\backend.cpp" />
+    <ClCompile Include="ui\imguimgr.cpp" />
     <ClCompile Include="ui\winclass.cpp" />
     <ClCompile Include="ui\winimpl.cpp" />
   </ItemGroup>
@@ -126,14 +135,27 @@
     <ClInclude Include="core\init.hpp" />
     <ClInclude Include="common\logsessn.hpp" />
     <ClInclude Include="core\jobqueue.hpp" />
-    <ClInclude Include="thirdparty\backward\backward.hpp" />
+    <ClInclude Include="thirdparty\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="thirdparty\imgui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="thirdparty\imgui\imconfig.h" />
+    <ClInclude Include="thirdparty\imgui\imgui.h" />
+    <ClInclude Include="thirdparty\imgui\imgui_internal.h" />
+    <ClInclude Include="thirdparty\imgui\imstb_rectpack.h" />
+    <ClInclude Include="thirdparty\imgui\imstb_textedit.h" />
+    <ClInclude Include="thirdparty\imgui\imstb_truetype.h" />
+    <ClInclude Include="thirdparty\imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="ui\backend.hpp" />
+    <ClInclude Include="ui\imguimgr.hpp" />
     <ClInclude Include="ui\winclass.hpp" />
     <ClInclude Include="ui\winbase.hpp" />
     <ClInclude Include="ui\winimpl.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="thirdparty\imgui\misc\debuggers\imgui.natstepfilter" />
     <None Include="TODO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="thirdparty\imgui\misc\debuggers\imgui.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,9 @@
-﻿#pragma once
+﻿/*!
+ *  @file       backend.hpp
+ *  @brief      DirectX 11 graphics backend for UI.
+ */
+
+#pragma once
 
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
@@ -23,6 +28,9 @@ public:
     ClearBuffer(
         const float rgbaColor[4]
     );
+
+    void
+    InitImgui();
 
 private:
     void

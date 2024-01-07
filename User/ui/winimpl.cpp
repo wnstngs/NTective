@@ -4,11 +4,24 @@
  */
 
 #include "winimpl.hpp"
+
+#include "imgui_impl_win32.h"
 #include "winclass.hpp"
 #include "../common/log.hpp"
 #include "../common/strutil.hpp"
 
+extern
+IMGUI_IMPL_API
+LRESULT
+ImGui_ImplWin32_WndProcHandler(
+    HWND hWnd,
+    UINT msg,
+    WPARAM wParam,
+    LPARAM lParam
+);
+
 namespace Ui {
+
 MAIN_WINDOW::MAIN_WINDOW(
     std::shared_ptr<WINDOW_CLASS_BASE> WindowClass,
     const std::wstring &Title
@@ -19,7 +32,7 @@ MAIN_WINDOW::MAIN_WINDOW(
     }
 {
     auto future = JobQueue_.Enqueue([=, this] {
-        constexpr DWORD windowStyles = WS_VISIBLE | WS_OVERLAPPEDWINDOW;
+        constexpr DWORD windowStyles = WS_OVERLAPPEDWINDOW;
         constexpr DWORD windowStylesEx = 0;
         const HMODULE moduleHandle = GetModuleHandleW(nullptr);
 
@@ -42,6 +55,14 @@ MAIN_WINDOW::MAIN_WINDOW(
         }
 
         GfxBackend_ = std::make_unique<GFX_BACKEND>(Handle_);
+
+        ImguiMgr_ = std::make_unique<IMGUI_MGR>(Handle_);
+
+        ImGui_ImplWin32_Init(Handle_);
+        GfxBackend_->InitImgui();
+
+        ShowWindow(Handle_, SW_SHOWDEFAULT);
+        UpdateWindow(Handle_);
     });
 
     StartSignal_.release();
@@ -85,17 +106,41 @@ MAIN_WINDOW::HandleMessage(
 )
 {
     try {
+        if (ImGui_ImplWin32_WndProcHandler(Handle,
+                                           Message,
+                                           WParam,
+                                           LParam)) {
+            return true;
+        }
+
         switch (Message) {
-        case WM_DESTROY:
+        case WM_DESTROY: {
             Handle_ = nullptr;
             PostQuitMessage(0);
             return 0;
-        case WM_CLOSE:
+        }
+        case WM_CLOSE: {
             IsClosing_ = true;
             return 0;
-        case WM_JOB:
+        }
+        case WM_JOB: {
             JobQueue_.PopAndExecute();
             return 0;
+        }
+        case WM_SIZE: {
+            if (WParam == SIZE_MINIMIZED) {
+                return 0;
+            }
+            ResizeWidth_ = LOWORD(LParam);
+            ResizeHeight_ = HIWORD(LParam);
+            return 0;
+        }
+        case WM_SYSCOMMAND: {
+            /* Disable ALT application menu. */
+            if ((WParam & 0xFFF0) == SC_KEYMENU)
+                return 0;
+            break;
+        }
         default:
             return DefWindowProcW(Handle, Message, WParam, LParam);
         }
