@@ -108,7 +108,7 @@
     <ClCompile Include="common\ioc.cpp" />
     <ClCompile Include="common\log.cpp" />
     <ClCompile Include="core\init.cpp" />
-    <ClCompile Include="core\jobqueue.cpp" />
+    <ClCompile Include="common\jobqueue.cpp" />
     <ClCompile Include="thirdparty\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="thirdparty\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="thirdparty\imgui\imgui.cpp" />
@@ -134,7 +134,7 @@
     <ClInclude Include="common\win32.h" />
     <ClInclude Include="core\init.hpp" />
     <ClInclude Include="common\logsessn.hpp" />
-    <ClInclude Include="core\jobqueue.hpp" />
+    <ClInclude Include="common\jobqueue.hpp" />
     <ClInclude Include="thirdparty\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="thirdparty\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="thirdparty\imgui\imconfig.h" />

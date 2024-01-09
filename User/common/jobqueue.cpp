@@ -5,7 +5,7 @@
 
 #include "jobqueue.hpp"
 
-namespace Core {
+namespace Common::Util {
 
 void
 JOB_QUEUE::PopAndExecute()

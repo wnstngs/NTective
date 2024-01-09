@@ -5,15 +5,15 @@
 
 #pragma once
 
-#include <functional>
-#include <mutex>
 #include <deque>
+#include <functional>
 #include <future>
+#include <mutex>
 
-#include "../common/log.hpp"
-#include "../common/macros.h"
+#include "log.hpp"
+#include "macros.h"
 
-namespace Core {
+namespace Common::Util {
 
 /*!
  * @brief A simple job (generic task) queue implementation.

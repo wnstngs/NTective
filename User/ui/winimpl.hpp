@@ -12,7 +12,7 @@
 #include "imguimgr.hpp"
 #include "winbase.hpp"
 #include "../common/excption.hpp"
-#include "../core/jobqueue.hpp"
+#include "../common/jobqueue.hpp"
 
 namespace Ui {
 
@@ -71,14 +71,13 @@ protected:
     void
     JobDispatch();
 
-protected:
     std::shared_ptr<WINDOW_CLASS_BASE> WindowClass_;
     HWND Handle_;
     std::unique_ptr<GFX_BACKEND> GfxBackend_;
     std::unique_ptr<IMGUI_MGR> ImguiMgr_;
     std::thread MessageLoopThread_;
     std::binary_semaphore StartSignal_{ 0 };
-    mutable Core::JOB_QUEUE JobQueue_;
+    mutable Common::Util::JOB_QUEUE JobQueue_;
     std::atomic<bool> IsClosing_ = false;
     std::atomic<unsigned int> ResizeWidth_ = 0;
     std::atomic<unsigned int> ResizeHeight_ = 0;
