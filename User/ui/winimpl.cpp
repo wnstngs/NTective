@@ -54,15 +54,14 @@ MAIN_WINDOW::MAIN_WINDOW(
             throw WINDOW_EXCEPTION{"Failed to create window"};
         }
 
-        GfxBackend_ = std::make_unique<GFX_BACKEND>(Handle_);
+        ShowWindow(Handle_, SW_SHOWDEFAULT);
+        UpdateWindow(Handle_);
 
         ImguiMgr_ = std::make_unique<IMGUI_MGR>(Handle_);
 
         ImGui_ImplWin32_Init(Handle_);
-        GfxBackend_->InitImgui();
 
-        ShowWindow(Handle_, SW_SHOWDEFAULT);
-        UpdateWindow(Handle_);
+        GfxBackend_ = std::make_unique<GFX_BACKEND>(Handle_);
     });
 
     StartSignal_.release();
@@ -72,6 +71,7 @@ MAIN_WINDOW::MAIN_WINDOW(
 MAIN_WINDOW::~MAIN_WINDOW()
 {
     Dispatch([this] {
+        ImGui_ImplWin32_Shutdown();
         if (!DestroyWindow(Handle_)) {
             LOG.Warning(L"Failed to destroy window");
         }

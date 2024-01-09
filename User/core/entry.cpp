@@ -30,9 +30,10 @@ wWinMain(
         std::shared_ptr<Ui::WINDOW_BASE> mainWindow = Common::Ioc::GetIoc().Resolve<Ui::WINDOW_BASE>();
 
         while (!mainWindow->IsClosing()) {
-            float color[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+            std::array color = {1.0f, 0.0f, 0.0f, 1.0f};
+            mainWindow->GetRenderer().NewFrame();
             mainWindow->GetRenderer().ClearBuffer(color);
-            mainWindow->GetRenderer().EndScene();
+            mainWindow->GetRenderer().EndFrame();
         }
 
     } catch (const std::exception &e) {

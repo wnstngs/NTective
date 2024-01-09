@@ -30,8 +30,6 @@ IMGUI_MGR::IMGUI_MGR(
 
 IMGUI_MGR::~IMGUI_MGR()
 {
-    ImGui_ImplWin32_Shutdown();
-    ImGui_ImplDX11_Shutdown();
     ImGui::DestroyContext();
 }
 

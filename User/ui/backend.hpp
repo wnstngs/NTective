@@ -9,6 +9,8 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 
+#include <array>
+
 #include "../common/win32.h"
 
 namespace Ui {
@@ -22,15 +24,15 @@ public:
     ~GFX_BACKEND();
 
     void
-    EndScene();
+    NewFrame();
+
+    void
+    EndFrame();
 
     void
     ClearBuffer(
-        const float rgbaColor[4]
+        const std::array<float, 4> &Color
     );
-
-    void
-    InitImgui();
 
 private:
     void

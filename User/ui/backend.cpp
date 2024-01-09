@@ -6,6 +6,7 @@
 #include "backend.hpp"
 
 #include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
 #include "../common/log.hpp"
 
 namespace Ui {
@@ -53,27 +54,41 @@ GFX_BACKEND::GFX_BACKEND(
                                     &RenderTargetView_);
     backBuffer->Release();
     backBuffer = nullptr;
+
+    ImGui_ImplDX11_Init(Device_, DeviceContext_);
 }
 
 GFX_BACKEND::~GFX_BACKEND()
 {
+    ImGui_ImplDX11_Shutdown();
     Cleanup();
 }
 
 void
-GFX_BACKEND::EndScene()
+GFX_BACKEND::NewFrame()
+{
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+}
+
+void
+GFX_BACKEND::EndFrame()
 {
     if (!SwapChain_) {
         LOG.Warning(L"SwapChain_ is null");
         return;
     }
 
+    ImGui::Render();
+    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
     SwapChain_->Present(1, 0);
 }
 
 void
 GFX_BACKEND::ClearBuffer(
-    const float rgbaColor[4]
+    const std::array<float, 4> &Color
 )
 {
     if (!RenderTargetView_) {
@@ -81,18 +96,7 @@ GFX_BACKEND::ClearBuffer(
         return;
     }
 
-    if (!rgbaColor) {
-        LOG.Warning(L"rgbaColor is null");
-        return;
-    }
-
-    DeviceContext_->ClearRenderTargetView(RenderTargetView_, rgbaColor);
-}
-
-void
-GFX_BACKEND::InitImgui()
-{
-    ImGui_ImplDX11_Init(Device_, DeviceContext_);
+    DeviceContext_->ClearRenderTargetView(RenderTargetView_, Color.data());
 }
 
 void
