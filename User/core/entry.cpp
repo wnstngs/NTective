@@ -21,6 +21,11 @@ wWinMain(
     int CmdShow
 )
 {
+    UNREFERENCED_PARAMETER(Instance);
+    UNREFERENCED_PARAMETER(PrevInstance);
+    UNREFERENCED_PARAMETER(CmdLine);
+    UNREFERENCED_PARAMETER(CmdShow);
+
     try {
 
         /* Register IoC factories and singletons */
@@ -29,6 +34,7 @@ wWinMain(
 
         std::shared_ptr<Ui::WINDOW_BASE> mainWindow = Common::Ioc::GetIoc().Resolve<Ui::WINDOW_BASE>();
 
+        /* Core loop */
         while (!mainWindow->IsClosing()) {
             std::array color = {1.0f, 0.0f, 0.0f, 1.0f};
             mainWindow->GetRenderer().NewFrame();
